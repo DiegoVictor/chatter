@@ -18,6 +18,20 @@ class MessagesServices {
     this.messagesRepository = getCustomRepository(MessagesRepository);
     this.usersRepository = getCustomRepository(UsersRepository);
   }
+
+  async listByUserId(user_id: string) {
+    if (!(await this.usersRepository.findOne(user_id))) {
+      throw notFound('User not found', { code: 245 });
+    }
+
+    const messages = await this.messagesRepository.find({
+      where: { user_id },
+      relations: ['user'],
+    });
+
+    return messages;
+  }
+
   async store({ admin_id, user_id, text }: IMessageCreate) {
     if (!(await this.usersRepository.findOne(user_id))) {
       throw notFound('User not found', { code: 244 });
