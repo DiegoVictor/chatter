@@ -3,16 +3,19 @@ import { getCustomRepository } from 'typeorm';
 import UsersRepository from '../repositories/UsersRepository';
 
 class UsersService {
-  async store(email: string) {
-    const usersRepository = getCustomRepository(UsersRepository);
+  private usersRepository: UsersRepository;
 
-    let user = await usersRepository.findOne({ email });
+  constructor() {
+    this.usersRepository = getCustomRepository(UsersRepository);
+  }
+  async store(email: string) {
+    let user = await this.usersRepository.findOne({ email });
     if (user) {
       return user;
     }
 
-    user = usersRepository.create({ email });
-    await usersRepository.save(user);
+    user = this.usersRepository.create({ email });
+    await this.usersRepository.save(user);
 
     return user;
   }

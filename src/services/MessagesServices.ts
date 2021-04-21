@@ -11,21 +11,25 @@ interface IMessageCreate {
 }
 
 class MessagesServices {
-  async store({ admin_id, user_id, text }: IMessageCreate) {
-    const messagesRepository = getCustomRepository(MessagesRepository);
-    const usersRepository = getCustomRepository(UsersRepository);
+  private messagesRepository: MessagesRepository;
+  private usersRepository: UsersRepository;
 
-    if (!(await usersRepository.findOne(user_id))) {
+  constructor() {
+    this.messagesRepository = getCustomRepository(MessagesRepository);
+    this.usersRepository = getCustomRepository(UsersRepository);
+  }
+  async store({ admin_id, user_id, text }: IMessageCreate) {
+    if (!(await this.usersRepository.findOne(user_id))) {
       throw notFound('User not found', { code: 244 });
     }
 
-    const message = messagesRepository.create({
+    const message = this.messagesRepository.create({
       admin_id,
       text,
       user_id,
     });
 
-    await messagesRepository.save(message);
+    await this.messagesRepository.save(message);
 
     return message;
   }

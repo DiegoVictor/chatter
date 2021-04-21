@@ -9,19 +9,23 @@ interface ISettingsCreate {
 }
 
 class SettingsService {
-  async store({ username, chat }: ISettingsCreate) {
-    const settingsRepository = getCustomRepository(SettingsRepository);
+  private settingsRepository: SettingsRepository;
 
-    if (await settingsRepository.findOne({ username })) {
+  constructor() {
+    this.settingsRepository = getCustomRepository(SettingsRepository);
+  }
+
+  async store({ username, chat }: ISettingsCreate) {
+    if (await this.settingsRepository.findOne({ username })) {
       throw badRequest('Setting already exists', { code: 140 });
     }
 
-    const settings = settingsRepository.create({
+    const settings = this.settingsRepository.create({
       username,
       chat,
     });
 
-    await settingsRepository.save(settings);
+    await this.settingsRepository.save(settings);
 
     return settings;
   }
