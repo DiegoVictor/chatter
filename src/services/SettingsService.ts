@@ -13,7 +13,7 @@ class SettingsService {
     const settingsRepository = getCustomRepository(SettingsRepository);
 
     if (await settingsRepository.findOne({ username })) {
-      throw badRequest('User already exists', { code: 140 });
+      throw badRequest('Setting already exists', { code: 140 });
     }
 
     const settings = settingsRepository.create({
