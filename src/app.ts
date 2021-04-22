@@ -7,6 +7,8 @@ import { isBoom } from '@hapi/boom';
 import { errors } from 'celebrate';
 import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
+import path from 'path';
+import { renderFile } from 'ejs';
 
 import './database';
 import routes from './routes';
@@ -26,6 +28,11 @@ app.use(express.static(publicPath));
 app.set('views', publicPath);
 app.engine('html', renderFile);
 app.set('view engine', 'html');
+
+app.get('/pages/client', (request: Request, response: Response) => {
+  return response.render('html/client.html');
+});
+
 app.use('/v1', routes);
 
 app.use(errors());
