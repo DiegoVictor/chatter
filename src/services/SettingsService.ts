@@ -15,6 +15,12 @@ class SettingsService {
     this.settingsRepository = getCustomRepository(SettingsRepository);
   }
 
+  async getByUsername(username: string) {
+    const settings = await this.settingsRepository.findOne({ username });
+
+    return settings;
+  }
+
   async store({ username, chat }: ISettingsCreate) {
     if (await this.settingsRepository.findOne({ username })) {
       throw badRequest('Setting already exists', { code: 140 });
