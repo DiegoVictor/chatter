@@ -4,6 +4,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { isBoom } from '@hapi/boom';
+import { errors } from 'celebrate';
 
 import './database';
 import routes from './routes';
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use('/v1', routes);
 
+app.use(errors());
 app.use(
   async (
     error: Error,
