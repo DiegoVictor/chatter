@@ -35,6 +35,19 @@ class SettingsService {
 
     return settings;
   }
+
+  async update({ username, chat }: ISettingsCreate) {
+    let settings = await this.settingsRepository.findOne({ username });
+    if (!settings) {
+      throw badRequest('Setting not found', { code: 144 });
+    }
+
+    settings.chat = chat;
+
+    await this.settingsRepository.save(settings);
+
+    return settings;
+  }
 }
 
 export default SettingsService;

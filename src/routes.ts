@@ -20,6 +20,7 @@ const usersMessagesController = new UsersMessagesController();
 
 app.get('/settings/:username', usernameValidator, settingsController.show);
 app.post('/settings', createSettingsValidator, settingsController.store);
+app.put('/settings/:username', usernameValidator, settingsController.update);
 
 app.post('/users', emailValidator, usersController.store);
 
