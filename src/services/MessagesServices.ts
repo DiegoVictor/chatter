@@ -1,6 +1,8 @@
 import { notFound } from '@hapi/boom';
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, Repository } from 'typeorm';
 
+import Message from '../entities/Message';
+import User from '../entities/User';
 import MessagesRepository from '../repositories/MessagesRepository';
 import UsersRepository from '../repositories/UsersRepository';
 
@@ -11,8 +13,8 @@ interface IMessageCreate {
 }
 
 class MessagesServices {
-  private messagesRepository: MessagesRepository;
-  private usersRepository: UsersRepository;
+  private messagesRepository: Repository<Message>;
+  private usersRepository: Repository<User>;
 
   constructor() {
     this.messagesRepository = getCustomRepository(MessagesRepository);

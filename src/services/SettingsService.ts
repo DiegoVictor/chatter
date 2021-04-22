@@ -1,6 +1,7 @@
 import { badRequest } from '@hapi/boom';
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, Repository } from 'typeorm';
 
+import Setting from '../entities/Settings';
 import SettingsRepository from '../repositories/SettingsRepository';
 
 interface ISettingsCreate {
@@ -9,7 +10,7 @@ interface ISettingsCreate {
 }
 
 class SettingsService {
-  private settingsRepository: SettingsRepository;
+  private settingsRepository: Repository<Setting>;
 
   constructor() {
     this.settingsRepository = getCustomRepository(SettingsRepository);
