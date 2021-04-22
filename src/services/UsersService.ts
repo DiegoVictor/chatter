@@ -1,13 +1,21 @@
-import { badRequest } from '@hapi/boom';
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, Repository } from 'typeorm';
+
+import User from '../entities/User';
 import UsersRepository from '../repositories/UsersRepository';
 
 class UsersService {
-  private usersRepository: UsersRepository;
+  private usersRepository: Repository<User>;
 
   constructor() {
     this.usersRepository = getCustomRepository(UsersRepository);
   }
+
+  async show(email: string) {
+    const user = await this.usersRepository.findOne({ email });
+
+    return user;
+  }
+
   async store(email: string) {
     let user = await this.usersRepository.findOne({ email });
     if (user) {
