@@ -5,9 +5,11 @@ import SettingsController from './controllers/SettingsController';
 import UsersController from './controllers/UsersController';
 import UsersMessagesController from './controllers/UsersMessagesController';
 import createMessagesValidator from './validators/createMessagesValidator';
+
 import createSettingsValidator from './validators/createSettingsValidator';
 import emailValidator from './validators/emailValidator';
 import userIdValidator from './validators/userIdValidator';
+import usernameValidator from './validators/usernameValidator';
 
 const app = Router();
 
@@ -16,6 +18,7 @@ const usersController = new UsersController();
 const messagesController = new MessagesController();
 const usersMessagesController = new UsersMessagesController();
 
+app.get('/settings/:username', usernameValidator, settingsController.show);
 app.post('/settings', createSettingsValidator, settingsController.store);
 
 app.post('/users', emailValidator, usersController.store);
