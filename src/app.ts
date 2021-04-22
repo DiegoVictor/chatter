@@ -5,12 +5,16 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { isBoom } from '@hapi/boom';
 import { errors } from 'celebrate';
+import { createServer } from 'http';
+import { Server, Socket } from 'socket.io';
 
 import './database';
 import routes from './routes';
 
 const app = express();
 
+const http = createServer(app);
+const io = new Server(http);
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
@@ -39,4 +43,4 @@ app.use(
   }
 );
 
-export default app;
+export { http, io };
