@@ -32,9 +32,14 @@ io.on('connect', (socket) => {
       await connectionsService.store(connection);
     }
 
-    await messagesServices.store({
-      text,
-      user_id: user.id,
-    });
+    const [messages] = await Promise.all([
+      messagesServices.listByUserId(user.id),
+      messagesServices.store({
+        text,
+        user_id: user.id,
+      }),
+    ]);
+
+    socket.emit('client_list_messages', messages);
   });
 });
