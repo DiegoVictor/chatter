@@ -21,7 +21,11 @@ const io = new Server(http);
 const publicPath = path.join(__dirname, '..', 'public');
 
 app.use(cors());
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 app.use(express.json());
 
 app.use(express.static(publicPath));
