@@ -23,6 +23,13 @@ class ConnectionsService {
     return connection;
   }
 
+  async getPending() {
+    return await this.connectionsRepository.find({
+      where: { admin_id: null },
+      relations: ['user'],
+    });
+  }
+
   async store({ socket_id, user_id, admin_id, id }: IConnectionCreate) {
     const connection = this.connectionsRepository.create({
       socket_id,
