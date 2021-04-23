@@ -17,18 +17,18 @@
 
     <div class="chat chat_support" id="chat_in_support">
       <div class="in_support_header">
-        <span>Em suporte ... </span>
+        <span class="logo">
+          Chatter
+        </span>
         <div class="icon_close" onclick="closeChat();">
           <img src="/images/close.png" />
         </div>
       </div>
 
       <div class="text_support">
-        <script id="email-template" type="text/template">
+        <script id="message-user-template" type="text/template">
           <div class="client">
             <span class="name">{{email}}</span>
-        </script>
-        <script id="message-user-template" type="text/template">
             <span class="client message">
               {{message}}
               <label class="date">{{date}}</label>
@@ -42,17 +42,18 @@
             <label class="date">{{date}}</label>
           </div>
         </script>
-        <div id="messages" class="chat__messages"></div>
-        <div class="line"></div>
-      </div>
-      <div class="message_send">
-        <input
-          type="text"
-          placeholder="Digite sua mensagem aqui"
-          id="message_user"
-        />
-        <div class="send_message_button" id="send_message_button">
-          <img src="/images/send.png" />
+        <div class="scroll__messages">
+          <div id="messages" class="chat__messages"></div>
+        </div>
+        <div class="message_send">
+          <input
+            type="text"
+            placeholder="Digite sua mensagem aqui"
+            id="message_user"
+          />
+          <div class="send_message_button" id="send_message_button">
+            <img src="/images/send.png" />
+          </div>
         </div>
       </div>
     </div>
@@ -60,7 +61,6 @@
     <div class="chat chat_support" id="chat_help">
       <div class="in_support_header">
         <span class="logo">
-          <img src="/images/chat.png" />
           Chatter
         </span>
         <div class="icon_close" onclick="closeChat();">
