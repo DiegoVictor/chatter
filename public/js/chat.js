@@ -54,6 +54,10 @@ document.querySelector('#start_chat').addEventListener('click', () => {
     });
   });
 
+  socket.on('set_admin_socket_id', ({ socket_id }) => {
+    admin_socket_id = socket_id;
+  });
+
   socket.on('admin_sent_message', (message) => {
     ({ socket_id: admin_socket_id } = message);
     const template_admin = document.getElementById('admin-template').innerHTML;

@@ -31,6 +31,7 @@ function call(id) {
 
   const params = {
     user_id: connection.user_id,
+    user_socket_id: connection.socket_id,
   };
 
   socket.emit('admin_user_in_support', params);
