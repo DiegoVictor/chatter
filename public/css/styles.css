@@ -380,12 +380,12 @@ input[type="text"]:focus {
 .btn_atd {
   cursor: pointer;
   color: #fff;
-  background: #b32a2a;
+  background: #8257e6;
   border: none;
-  height: 30px;
-  padding: 10px;
+  padding: 10px 15px;
   display: flex;
   align-items: center;
+  border-radius: 4px;
 }
 
 .btn_atd:hover {
@@ -395,7 +395,6 @@ input[type="text"]:focus {
 .admin {
   padding: 0px;
   margin: 3px 0px;
-  width: 100%;
 }
 
 .email {
@@ -406,11 +405,22 @@ input[type="text"]:focus {
 .admin_send_message {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+  border-radius: 0px 0px 10px 10px;
+  background-color: #fff;
+  box-shadow: 0px -2px 20px #EEE;
 }
 
 .admin_send_message input {
-  width: 300px;
   margin-right: 10px;
+  outline: none;
+  width: 252px;
+  padding: 3px 10px;
+  height: 38px;
+  border: 0px;
+  border-radius: 10px;
 }
 
 .admin_send_message button {
@@ -420,19 +430,26 @@ input[type="text"]:focus {
 
 .admin_list_messages {
   height: 300px;
-  overflow-y: scroll;
+  overflow-y: auto;
+}
+
+.admin_message_admin,
+.admin_message_client {
+  display: flex;
+  width: 100%;
 }
 
 .admin_message_admin {
-  width: 300px;
-  background: #e0e0e0;
+  justify-content: end;
+}
+
+.admin_message_admin span {
+  max-width: 250px;
+  background: #9368f7;
+  color: #eee;
   padding: 10px;
-  margin: 12px;
-  display: flex;
-  flex-direction: column;
-
-  border-radius: 10px;
-
+  display: inline-block;
+  border-radius: 4px;
   font-family: "Roboto", sans-serif;
 }
 
@@ -440,16 +457,13 @@ input[type="text"]:focus {
   width: 600px;
 }
 
-.admin_message_client {
-  width: 300px;
-  background: #6f5eab;
+.admin_message_client span {
+  max-width: 250px;
+  background: #f2ecfa;
+  color: #8257e6;
   padding: 10px;
-  margin: 10px;
-  color: #eee;
-  display: flex;
-  flex-direction: column;
-
-  border-radius: 10px;
+  display: inline-block;
+  border-radius: 4px;
   font-family: "Roboto", sans-serif;
 }
 
@@ -466,4 +480,40 @@ input[type="text"]:focus {
 
 .btn_send:hover {
   opacity: 0.8;
+}
+
+#supports {
+  bottom: 15px;
+  display: flex;
+  position: absolute;
+}
+
+#supports .in_support {
+  font-family: 'Roboto';
+  width: 100%;
+  display: block;
+  padding: 18px 15px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 15px;
+  color: white;
+  background: #8257e6;
+  border-radius: 10px 10px 0px 0px;
+}
+
+#supports .in_support .logo {
+  margin-left: 0px;
+  padding: 0px;
+}
+
+#supports .admin {
+  max-width: 320px;
+  border-radius: 10px 10px 0px 0px;
+  box-shadow: 0px -10px 25px #BBB;
+  margin-right: 15px;
+}
+
+#supports .icon_close {
+  position: absolute;
+  right: 27px;
+  top: 15px;
 }
