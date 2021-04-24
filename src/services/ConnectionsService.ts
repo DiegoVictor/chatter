@@ -30,6 +30,14 @@ class ConnectionsService {
     });
   }
 
+  async getBySocketId(socket_id: string) {
+    return await this.connectionsRepository.findOne({ socket_id });
+  }
+
+  async setAdminId(user_id: string, admin_id: string) {
+    await this.connectionsRepository.update({ user_id }, { admin_id });
+  }
+
   async store({ socket_id, user_id, admin_id, id }: IConnectionCreate) {
     const connection = this.connectionsRepository.create({
       socket_id,
