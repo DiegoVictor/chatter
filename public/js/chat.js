@@ -1,5 +1,9 @@
-document.querySelector('#start_chat').addEventListener('click', (event) => {
-  const socket = io();
+let email;
+let socket;
+let admin_socket_id;
+
+document.querySelector('#start_chat').addEventListener('click', () => {
+  socket = io();
 
   const chat_help = document.getElementById('chat_help');
   chat_help.style.display = 'none';
@@ -7,8 +11,11 @@ document.querySelector('#start_chat').addEventListener('click', (event) => {
   const chat_support = document.getElementById('chat_in_support');
   chat_support.style.display = 'block';
 
-  const email = document.getElementById('email').value;
+  email = document.getElementById('email').value;
   const text = document.getElementById('txt_help').value;
+
+  const container = document.getElementById('messages');
+  const scroll = document.querySelector('.scroll__messages');
 
   socket.on('connect', () => {
     const params = { email, text };
@@ -29,18 +36,59 @@ document.querySelector('#start_chat').addEventListener('click', (event) => {
 
     messages.forEach((message) => {
       let rendered;
+
       if (message.admin_id) {
         rendered = Mustache.render(template_admin, {
           message_admin: message.text,
-          email,
         });
       } else {
         rendered = Mustache.render(template_client, {
           message: message.text,
-          email,
         });
       }
-      document.getElementById('messages').innerHTML += rendered;
+
+      container.innerHTML += rendered;
+      setTimeout(() => {
+        scroll.scrollTo(0, container.offsetHeight);
+      }, 50);
     });
   });
+
+  socket.on('admin_sent_message', (message) => {
+    ({ socket_id: admin_socket_id } = message);
+    const template_admin = document.getElementById('admin-template').innerHTML;
+    const rendered = Mustache.render(template_admin, {
+      message_admin: message.text,
+    });
+
+    container.innerHTML += rendered;
+    setTimeout(() => {
+      scroll.scrollTo(0, container.offsetHeight);
+    }, 50);
+  });
+});
+
+document.querySelector('#send_message_button').addEventListener('click', () => {
+  const text = document.getElementById('message_user');
+
+  const params = {
+    text: text.value,
+    admin_socket_id,
+  };
+  socket.emit('client_sent_message', params);
+
+  const template_client = document.getElementById('message-user-template')
+    .innerHTML;
+  const rendered = Mustache.render(template_client, {
+    message: text.value,
+  });
+
+  const container = document.getElementById('messages');
+  const scroll = container.parentNode;
+  container.innerHTML += rendered;
+  text.value = '';
+
+  setTimeout(() => {
+    scroll.scrollTo(0, container.offsetHeight);
+  }, 50);
 });
