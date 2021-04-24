@@ -18,7 +18,10 @@ class ConnectionsService {
   }
 
   async getByUserId(user_id: string) {
-    const connection = await this.connectionsRepository.findOne({ user_id });
+    const connection = await this.connectionsRepository.findOne({
+      where: { user_id },
+      relations: ['user'],
+    });
 
     return connection;
   }
