@@ -28,18 +28,14 @@
       <div class="text_support">
         <script id="message-user-template" type="text/template">
           <div class="client">
-            <span class="name">{{email}}</span>
             <span class="client message">
               {{message}}
-              <label class="date">{{date}}</label>
             </span>
           </div>
         </script>
         <script id="admin-template" type="text/template">
           <div class="admin">
-            <span class="admin_name">Atendente</span>
             <span class="admin message"> {{message_admin}} </span>
-            <label class="date">{{date}}</label>
           </div>
         </script>
         <div class="scroll__messages">
@@ -100,6 +96,8 @@
     <script>
       onLoad();
       const chat = document.getElementById("chat_help");
+      const btn_support = document.getElementById("btn_support");
+      const chat_support = document.getElementById('chat_in_support');
 
       function onLoad() {
         fetch("http://localhost:3333/v1/settings/admin").then((result) =>
@@ -114,10 +112,16 @@
 
       function openChat() {
         chat.style.display = "block";
+        btn_support.style.opacity = '0.3';
+        btn_support.setAttribute('disabled', true);
       }
 
       function closeChat() {
+        console.log(1);
         chat.style.display = "none";
+        btn_support.style.opacity = '1';
+        btn_support.removeAttribute('disabled');
+        chat_support.style.display = 'none';
       }
 
       function keyUpTextHelp(event) {

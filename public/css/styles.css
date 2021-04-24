@@ -3,6 +3,7 @@ root,
 html {
   padding: 5px;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -30,6 +31,7 @@ body {
   font-size: 17px;
   font-weight: 600;
   box-shadow: 0px 0px 25px #BBB;
+  z-index: 1;
 }
 
 .btn_support:hover {
@@ -79,7 +81,8 @@ body {
   max-width: 330px;
   right: 10px;
   animation: up 1s;
-  bottom: 96px
+  bottom: 90px;
+  z-index: 2;
 }
 
 .chat_support_hide {
@@ -105,9 +108,16 @@ body {
   }
 }
 
+.chat__messages {
+  padding: 0px;
+}
+
 .client {
   display: flex;
-  flex-direction: column;
+  justify-content: end;
+  padding: 0px;
+  margin: 3px 0px;
+  width: 100%;
 }
 
 .client .name {
@@ -117,21 +127,20 @@ body {
 .client_message {
   background: #f2ecfa;
   padding: 20px 10px;
-  margin: 10px 0;
-  width: 250px;
   margin-left: 30px;
   border-radius: 4px;
   line-height: 20px;
 }
 
 .client .message {
-  background: #f2ecfa;
-  padding: 20px 10px;
-  margin: 10px 0;
-  width: 250px;
-  margin-left: 30px;
+  background: #9368f7;
+  color: white;
+  padding: 10px;
+  margin: 10px 8px 10px 0px;
+  max-width: 230px;
   border-radius: 4px;
   line-height: 20px;
+  display: inline-block;
 }
 
 .text_support {
@@ -142,17 +151,14 @@ body {
   padding: 0px;
 }
 
-.admin {
-  display: flex;
-  flex-direction: column;
-}
-
 .admin .message {
-  width: 230px;
   background: #f2ecfa;
   border-radius: 4px;
   padding: 10px;
-  margin-left: 12px;
+  margin-left: 10px;
+  display: inline-block;
+  max-width: 230px;
+  color: #8257e6;
 }
 
 .message_send {
@@ -259,7 +265,9 @@ body {
 
 .date {
   text-align: right;
-  font-size: 1px;
+  font-size: 10px;
+  padding: 0px;
+  margin-top: 10px;
 }
 
 button, input, textarea {
@@ -369,11 +377,6 @@ input[type="text"]:focus {
   float: right;
 }
 
-.date {
-  text-align: right;
-  font-size: 1px;
-}
-
 .btn_atd {
   cursor: pointer;
   color: #fff;
@@ -390,8 +393,9 @@ input[type="text"]:focus {
 }
 
 .admin {
-  border: 1px solid #ededed;
-  margin-top: 5px;
+  padding: 0px;
+  margin: 3px 0px;
+  width: 100%;
 }
 
 .email {
