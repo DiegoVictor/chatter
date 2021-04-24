@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+
 import SettingsService from '../services/SettingsService';
 
 class SettingsController {

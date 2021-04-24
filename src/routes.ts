@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import MessagesController from './controllers/MessagesController';
 
+import MessagesController from './controllers/MessagesController';
 import SettingsController from './controllers/SettingsController';
 import UsersController from './controllers/UsersController';
 import UsersMessagesController from './controllers/UsersMessagesController';
-import createMessagesValidator from './validators/createMessagesValidator';
 
+import createMessagesValidator from './validators/createMessagesValidator';
 import createSettingsValidator from './validators/createSettingsValidator';
 import emailValidator from './validators/emailValidator';
 import userIdValidator from './validators/userIdValidator';
