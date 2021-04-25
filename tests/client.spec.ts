@@ -234,5 +234,5 @@ describe('Client Socket', () => {
       socket.close();
       done();
     });
-  });
+  }, 10000);
 });
