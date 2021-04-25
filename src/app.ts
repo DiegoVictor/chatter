@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import { isBoom } from '@hapi/boom';
 import { errors } from 'celebrate';
 import { createServer } from 'http';
-import { Server, Socket } from 'socket.io';
+import { Server } from 'socket.io';
 import path from 'path';
 import { renderFile } from 'ejs';
 
