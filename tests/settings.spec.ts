@@ -73,7 +73,7 @@ describe('Settings', () => {
       username,
       chat: !chat,
       created_at: created_at.toISOString(),
-      updated_at: updated_at.toISOString(),
+      updated_at: expect.any(String),
     });
   });
 
