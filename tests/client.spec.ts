@@ -54,7 +54,7 @@ describe('Client Socket', () => {
         autoConnect: true,
         reconnection: false,
         forceNew: true,
-        port: '3333',
+        port: String(serverAddress.port),
         transports: ['websocket'],
       }
     );
@@ -119,7 +119,7 @@ describe('Client Socket', () => {
         autoConnect: true,
         reconnection: false,
         forceNew: true,
-        port: '3333',
+        port: String(serverAddress.port),
         transports: ['websocket'],
       }
     );
@@ -184,7 +184,7 @@ describe('Client Socket', () => {
         autoConnect: true,
         reconnection: false,
         forceNew: true,
-        port: '3333',
+        port: String(serverAddress.port),
         transports: ['websocket'],
       }
     );
@@ -195,7 +195,7 @@ describe('Client Socket', () => {
         autoConnect: true,
         reconnection: false,
         forceNew: true,
-        port: '3333',
+        port: String(serverAddress.port),
         transports: ['websocket'],
       }
     );

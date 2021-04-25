@@ -63,7 +63,7 @@ describe('Admin Socket', () => {
         autoConnect: true,
         reconnection: false,
         forceNew: true,
-        port: '3333',
+        port: String(serverAddress.port),
         transports: ['websocket'],
       }
     );
@@ -106,7 +106,7 @@ describe('Admin Socket', () => {
         autoConnect: true,
         reconnection: true,
         forceNew: true,
-        port: '3333',
+        port: String(serverAddress.port),
         transports: ['websocket'],
       }
     );
@@ -152,7 +152,7 @@ describe('Admin Socket', () => {
         autoConnect: true,
         reconnection: true,
         forceNew: true,
-        port: '3333',
+        port: String(serverAddress.port),
         transports: ['websocket'],
       }
     );
@@ -186,7 +186,7 @@ describe('Admin Socket', () => {
         autoConnect: true,
         reconnection: true,
         forceNew: true,
-        port: '3333',
+        port: String(serverAddress.port),
         transports: ['websocket'],
       }
     );
@@ -223,7 +223,7 @@ describe('Admin Socket', () => {
         autoConnect: true,
         reconnection: true,
         forceNew: true,
-        port: '3333',
+        port: String(serverAddress.port),
         transports: ['websocket'],
       }
     );
