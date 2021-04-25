@@ -23,7 +23,6 @@ describe('Client Socket', () => {
 
   beforeAll(async () => {
     connection = await createConnection();
-    await connection.runMigrations();
 
     connectionsRepository = getRepository(Connection);
     usersRepository = connection.getRepository(User);
@@ -44,6 +43,8 @@ describe('Client Socket', () => {
   afterAll(async () => {
     server.close();
     http.close();
+
+    await connectionsRepository.delete({});
     await connection.close();
   });
 

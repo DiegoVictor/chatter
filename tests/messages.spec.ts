@@ -14,7 +14,7 @@ describe('Messages', () => {
 
   beforeAll(async () => {
     connection = await createConnection();
-    await connection.runMigrations();
+
     messagesRepository = connection.getRepository(Message);
     usersRepository = connection.getRepository(User);
   });

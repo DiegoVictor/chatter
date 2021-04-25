@@ -11,7 +11,6 @@ describe('Users', () => {
 
   beforeAll(async () => {
     connection = await createConnection();
-    await connection.runMigrations();
     repository = connection.getRepository(User);
   });
 
