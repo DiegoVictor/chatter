@@ -6,7 +6,6 @@ import {
   getRepository,
   Repository,
 } from 'typeorm';
-import faker from 'faker';
 
 import { http, io as server } from '../src/app';
 import Connection from '../src/entities/Connection';
@@ -15,7 +14,7 @@ import factory from './utils/factory';
 import User from '../src/entities/User';
 import Message from '../src/entities/Message';
 
-describe('Admin Socket', () => {
+describe('Client Socket', () => {
   let connection: TypeORMConnection;
   let serverAddress: AddressInfo;
   let connectionsRepository: Repository<Connection>;
