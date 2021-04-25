@@ -104,7 +104,7 @@ POST http://localhost:3333/v1/settings
 
 ## Routes
 |route|HTTP Method|params|description
-|:---|:---:|:---:|:---:|:---:|:---:
+|:---|:---:|:---:|:---:
 |`/settings/:username`|GET|`username` of the user.|Return the user's setting.
 |`/settings`|POST|Body with settings data.|Create new setting.
 |`/settings/:username`|PUT|`username` of the user and body with `chat` new value.|Update an user's setting.
