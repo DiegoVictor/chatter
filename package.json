@@ -7,8 +7,8 @@
     "build": "tsc",
     "dev:server": "ts-node-dev src/server.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
-    "pretest": "set NODE_ENV=tes&&ts-node-dev node_modules/typeorm/cli.js migration:run",
-    "test": "set NODE_ENV=test&&jest --runInBand",
+    "pretest": "cross-env NODE_ENV=test ts-node-dev node_modules/typeorm/cli.js migration:run",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
     "posttest": "rm src/database/test.sqlite"
   },
   "dependencies": {
@@ -41,6 +41,7 @@
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.24.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.2.0",
