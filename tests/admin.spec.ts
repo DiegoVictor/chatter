@@ -88,7 +88,7 @@ describe('Admin Socket', () => {
       socket.close();
       done();
     });
-  }, 30000);
+  });
 
   it('should be able to get user messages', async (done) => {
     const user = await factory.attrs<User>('User');
@@ -138,7 +138,7 @@ describe('Admin Socket', () => {
         }
       );
     });
-  }, 30000);
+  });
 
   it('should not be able to get messages from non existing user', async (done) => {
     const user = await factory.attrs<User>('User');
@@ -174,7 +174,7 @@ describe('Admin Socket', () => {
         }
       );
     });
-  }, 30000);
+  });
 
   it('should be able to receive admin message', async (done) => {
     const user = await factory.attrs<User>('User');
@@ -212,7 +212,7 @@ describe('Admin Socket', () => {
       });
       socket.emit('admin_send_message', { user_id, text: message.text });
     });
-  }, 30000);
+  });
 
   it('should be able to set connection as handled', async (done) => {
     const user = await factory.attrs<User>('User');
@@ -273,5 +273,5 @@ describe('Admin Socket', () => {
       socket.close();
       done();
     });
-  }, 30000);
+  });
 });
