@@ -7,7 +7,7 @@
     "build": "tsc",
     "dev:server": "ts-node-dev src/server.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "@hapi/boom": "^9.1.2",
