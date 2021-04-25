@@ -7,8 +7,8 @@
     "build": "tsc",
     "dev:server": "ts-node-dev src/server.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
-    "pretest": "ts-node-dev node_modules/typeorm/cli.js migration:run",
-    "test": "jest --runInBand",
+    "pretest": "set NODE_ENV=tes&&ts-node-dev node_modules/typeorm/cli.js migration:run",
+    "test": "set NODE_ENV=test&&jest --runInBand",
     "posttest": "rm src/database/test.sqlite"
   },
   "dependencies": {
