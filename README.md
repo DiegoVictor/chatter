@@ -8,7 +8,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)<br>
 [![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Chatter&uri=https%3A%2F%2Fraw.githubusercontent.com%2FDiegoVictor%2Fchatter%2Fmaster%2FInsomnia_2021-04-24.json)
 
-Responsible for provide data to the [`web`](https://github.com/DiegoVictor/bethehero-web) and [`mobile`](https://github.com/DiegoVictor/bethehero-app) front-ends. Permit to register NGOs and manage its incidents. The app has rate limit, brute force prevention, pagination, pagination's link header (to previous, next, first and last page), friendly errors, use JWT to logins, validation, also a simple versioning was made.
+Permit to register users and its settings, also manage websocket connections and messages. The app has friendly errors, validation, also a simple versioning was made.
 
 ## Table of Contents
 * [Installing](#installing)
