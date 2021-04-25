@@ -2,7 +2,7 @@ import request from 'supertest';
 import { Connection, createConnection, Repository } from 'typeorm';
 import faker from 'faker';
 
-import { http } from '../src/app';
+import { http, io } from '../src/app';
 import Setting from '../src/entities/Setting';
 import factory from './utils/factory';
 
@@ -21,6 +21,8 @@ describe('Settings', () => {
   });
 
   afterAll(async () => {
+    io.close();
+    http.close();
     await connection.close();
   });
 

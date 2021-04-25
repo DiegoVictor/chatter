@@ -2,7 +2,7 @@ import request from 'supertest';
 import { Connection, createConnection, Repository } from 'typeorm';
 import faker from 'faker';
 
-import { http } from '../src/app';
+import { http, io } from '../src/app';
 import Message from '../src/entities/Message';
 import factory from './utils/factory';
 import User from '../src/entities/User';
@@ -20,13 +20,13 @@ describe('Messages', () => {
   });
 
   beforeEach(async () => {
-    await Promise.all([
-      messagesRepository.delete({}),
-      usersRepository.delete({}),
-    ]);
+    await messagesRepository.delete({});
+    await usersRepository.delete({});
   });
 
   afterAll(async () => {
+    io.close();
+    http.close();
     await connection.close();
   });
 

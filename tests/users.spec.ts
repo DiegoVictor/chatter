@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { Connection, createConnection, Repository } from 'typeorm';
 
-import { http } from '../src/app';
+import { http, io } from '../src/app';
 import User from '../src/entities/User';
 import factory from './utils/factory';
 
@@ -20,6 +20,8 @@ describe('Users', () => {
   });
 
   afterAll(async () => {
+    io.close();
+    http.close();
     await connection.close();
   });
 
