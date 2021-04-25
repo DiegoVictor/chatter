@@ -17,6 +17,7 @@ import Message from '../src/entities/Message';
 import { Boom, notFound } from '@hapi/boom';
 
 global.Promise = jest.requireActual('promise');
+jest.setTimeout(10000);
 
 describe('Admin Socket', () => {
   let connection: TypeORMConnection;
