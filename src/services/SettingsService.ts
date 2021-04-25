@@ -1,7 +1,7 @@
 import { badRequest } from '@hapi/boom';
 import { getCustomRepository, Repository } from 'typeorm';
 
-import Setting from '../entities/Settings';
+import Setting from '../entities/Setting';
 import SettingsRepository from '../repositories/SettingsRepository';
 
 interface ISettingsCreate {
