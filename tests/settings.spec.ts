@@ -56,13 +56,9 @@ describe('Settings', () => {
 
   it('should be able to update a setting', async () => {
     const setting = await factory.attrs<Setting>('Setting');
-    const {
-      username,
-      chat,
-      id,
-      created_at,
-      updated_at,
-    } = await repository.save(repository.create(setting));
+    const { username, chat, id, created_at } = await repository.save(
+      repository.create(setting)
+    );
 
     const response = await request(http)
       .put(`/v1/settings/${username}`)

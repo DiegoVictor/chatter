@@ -34,14 +34,17 @@ describe('Client Socket', () => {
   });
 
   beforeEach(async () => {
-    await connectionsRepository.delete({});
-    await messagesRepository.delete({});
-    await usersRepository.delete({});
+    await Promise.all([
+      connectionsRepository.delete({}),
+      messagesRepository.delete({}),
+      usersRepository.delete({}),
+    ]);
   });
 
-  afterAll(() => {
+  afterAll(async () => {
     server.close();
     http.close();
+    await connection.close();
   });
 
   it('should be able to send initial message', async (done) => {

@@ -20,8 +20,10 @@ describe('Messages', () => {
   });
 
   beforeEach(async () => {
-    await messagesRepository.delete({});
-    await usersRepository.delete({});
+    await Promise.all([
+      messagesRepository.delete({}),
+      usersRepository.delete({}),
+    ]);
   });
 
   afterAll(async () => {
@@ -35,7 +37,6 @@ describe('Messages', () => {
     );
 
     const message = await factory.attrs<Message>('Message', { user_id });
-
     const response = await request(http).post('/v1/messages').send(message);
 
     expect(response.body).toStrictEqual({
