@@ -12,8 +12,12 @@ io.on('connect', async (socket) => {
   socket.on('admin_list_messages_by_user', async (params, callback) => {
     const { user_id } = params;
 
-    const messages = await messagesServices.listByUserId(user_id);
-    callback(messages);
+    try {
+      const messages = await messagesServices.listByUserId(user_id);
+      callback(messages);
+    } catch (err) {
+      callback(err);
+    }
   });
 
   socket.on('admin_send_message', async (params) => {
