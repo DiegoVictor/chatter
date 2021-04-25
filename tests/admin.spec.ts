@@ -16,6 +16,8 @@ import User from '../src/entities/User';
 import Message from '../src/entities/Message';
 import { Boom, notFound } from '@hapi/boom';
 
+global.Promise = jest.requireActual('promise');
+
 describe('Admin Socket', () => {
   let connection: TypeORMConnection;
   let serverAddress: AddressInfo;

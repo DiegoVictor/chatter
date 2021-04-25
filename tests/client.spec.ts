@@ -14,6 +14,8 @@ import factory from './utils/factory';
 import User from '../src/entities/User';
 import Message from '../src/entities/Message';
 
+global.Promise = jest.requireActual('promise');
+
 describe('Client Socket', () => {
   let connection: TypeORMConnection;
   let serverAddress: AddressInfo;
