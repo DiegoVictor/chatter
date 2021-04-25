@@ -36,9 +36,9 @@ describe('Admin Socket', () => {
   });
 
   beforeEach(async () => {
+    await messagesRepository.delete({});
     await Promise.all([
       connectionsRepository.delete({}),
-      messagesRepository.delete({}),
       usersRepository.delete({}),
     ]);
   });
