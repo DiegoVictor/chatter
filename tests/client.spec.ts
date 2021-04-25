@@ -172,8 +172,10 @@ describe('Client Socket', () => {
   });
 
   it('should be able to send messages', async (done) => {
-    const { text } = await factory.attrs<Message>('Message');
-    const user = await factory.attrs<User>('User');
+    const [{ text }, user] = await Promise.all([
+      factory.attrs<Message>('Message'),
+      factory.attrs<User>('User'),
+    ]);
     const { id: user_id } = await usersRepository.save(
       usersRepository.create(user)
     );
