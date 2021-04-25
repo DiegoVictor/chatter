@@ -22,6 +22,7 @@ describe('Settings', () => {
   afterAll(async () => {
     io.close();
     http.close();
+    await repository.delete({});
     await connection.close();
   });
 

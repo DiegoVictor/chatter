@@ -27,6 +27,8 @@ describe('Messages', () => {
   afterAll(async () => {
     io.close();
     http.close();
+    await messagesRepository.delete({});
+    await usersRepository.delete({});
     await connection.close();
   });
 

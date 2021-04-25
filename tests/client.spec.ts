@@ -47,7 +47,11 @@ describe('Client Socket', () => {
     server.close();
     http.close();
 
-    await connectionsRepository.delete({});
+    await messagesRepository.delete({});
+    await Promise.all([
+      connectionsRepository.delete({}),
+      usersRepository.delete({}),
+    ]);
     await connection.close();
   });
 
