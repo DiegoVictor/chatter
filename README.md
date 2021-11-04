@@ -106,13 +106,12 @@ POST http://localhost:3333/v1/settings
 ## Routes
 |route|HTTP Method|params|description
 |:---|:---:|:---:|:---:
-|`/settings/:username`|GET|`username` of the user.|Return the user's setting.
-|`/settings`|POST|Body with settings data.|Create new setting.
-|`/settings/:username`|PUT|`username` of the user and body with `chat` new value.|Update an user's setting.
+|`/settings/:id`|GET|`id` of the setting.|Return the user's setting.
+|`/settings`|POST|Body with settings `user_id` and `chat` property.|Create new setting.
+|`/settings/:id`|PUT|`id` of the setting and body with `chat` new value.|Update an user's setting.
 |`/users`|POST|Body with user's `email`.|Create a new user.
-|`/users/:user_id/messages`|GET|`id` of the user.|Return user's messages.
-|`/messages`|POST|Body with message data.|Return user's messages.
-
+|`/users/:id/messages`|GET|`id` of the user.|Return user's messages.
+|`/messages`|POST|Body with message data.|Save user new message.
 
 > Routes with `Bearer` as auth method expect an `Authorization` header. See [Bearer Token](#bearer-token) section for more information.
 
