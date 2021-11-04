@@ -141,7 +141,7 @@ Request body:
 Request body:
 ```json
 {
-  "title": "johndoe@example.com"
+  "email": "johndoe@example.com"
 }
 ```
 
