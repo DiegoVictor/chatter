@@ -122,7 +122,7 @@ POST http://localhost:3333/v1/settings
 Request body:
 ```json
 {
-  "username": "johndoe",
+  "user_id": "17c6f66d-a24b-45e0-8c3f-2b3411e51fe8",
   "chat": true
 }
 ```
