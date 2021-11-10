@@ -201,6 +201,73 @@
         }
       }
     },
+    "/settings": {
+      "post": {
+        "tags": ["Settings"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "title": "Settings",
+                "required": [
+                  "user_id",
+                  "chat"
+                ],
+                "properties": {
+                  "user_id": {
+                    "type": "string"
+                  },
+                  "chat": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "example": {
+                "user_id": "17c6f66d-a24b-45e0-8c3f-2b3411e51fe8",
+                "chat": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create new setting",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Settings"
+                },
+                "example": {
+                  "id": "e7d7d0f2-80c2-4472-ae50-64aaaa94f30e",
+                  "username": "johndoe",
+                  "chat": true,
+                  "created_at": "2021-08-29T19:27:06.000Z",
+                  "updated_at": "2021-08-29T19:27:06.000Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Setting already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "error": "Bad Request",
+                  "message": "Setting already exists",
+                  "code": 140,
+                  "docs": "https://github.com/DiegoVictor/chatter#errors-reference"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
   },
   "components": {
     "schemas": {
