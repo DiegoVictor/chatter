@@ -236,6 +236,25 @@
           }
         }
       },
+      "Settings": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "chat": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        }
+      },
       "Error": {
         "properties": {
           "statusCode": {
