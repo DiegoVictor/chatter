@@ -268,6 +268,38 @@
         }
       }
     },
+    "/settings/{id}": {
+      "get": {
+        "tags": ["Settings"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9b458a3-556e-4c33-9aa1-d60f78f44b90"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the user's setting",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "c9b458a3-556e-4c33-9aa1-d60f78f44b90",
+                  "user_id": "17c6f66d-a24b-45e0-8c3f-2b3411e51fe8",
+                  "chat": true,
+                  "created_at": "2021-08-29T19:46:41.000Z",
+                  "updated_at": "2021-08-29T19:46:41.000Z"
+                }
+              }
+            }
+          }
+        }
+      },
+    }
   },
   "components": {
     "schemas": {
