@@ -25,6 +25,7 @@
     "socket.io": "^4.0.1",
     "socket.io-client": "^4.0.1",
     "sqlite3": "^5.0.2",
+    "swagger-ui-express": "^4.1.6",
     "typeorm": "^0.2.32",
     "uuid": "^8.3.2"
   },
@@ -38,6 +39,7 @@
     "@types/socket.io": "^2.1.13",
     "@types/socket.io-client": "^1.4.36",
     "@types/supertest": "^2.0.11",
+    "@types/swagger-ui-express": "^4.1.3",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
