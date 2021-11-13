@@ -13,10 +13,10 @@ class SettingsController {
   }
 
   async store(request: Request, response: Response): Promise<Response> {
-    const { username, chat } = request.body;
+    const { user_id, chat } = request.body;
 
     const settingsService = new SettingsService();
-    const settings = await settingsService.store({ username, chat });
+    const settings = await settingsService.store({ user_id, chat });
 
     return response.json(settings);
   }

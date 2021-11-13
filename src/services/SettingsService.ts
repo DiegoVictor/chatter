@@ -6,7 +6,7 @@ import SettingsRepository from '../repositories/SettingsRepository';
 
 interface ISettingsCreate {
   chat: boolean;
-  username: string;
+  user_id?: string;
 }
 
 class SettingsService {
@@ -22,13 +22,13 @@ class SettingsService {
     return settings;
   }
 
-  async store({ username, chat }: ISettingsCreate) {
-    if (await this.settingsRepository.findOne({ username })) {
+  async store({ user_id, chat }: ISettingsCreate) {
+    if (await this.settingsRepository.findOne({ user_id })) {
       throw badRequest('Setting already exists', { code: 140 });
     }
 
     const settings = this.settingsRepository.create({
-      username,
+      user_id,
       chat,
     });
 
