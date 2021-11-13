@@ -13,7 +13,7 @@ class MessagesController {
       text,
     });
 
-    return response.json(message);
+    return response.status(201).json(message);
   }
 }
 

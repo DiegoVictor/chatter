@@ -18,7 +18,7 @@ class SettingsController {
     const settingsService = new SettingsService();
     const settings = await settingsService.store({ user_id, chat });
 
-    return response.json(settings);
+    return response.status(201).json(settings);
   }
 
   async update(request: Request, response: Response): Promise<Response> {

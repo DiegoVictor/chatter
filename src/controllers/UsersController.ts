@@ -9,7 +9,7 @@ class UsersController {
     const usersService = new UsersService();
     const user = await usersService.store(email);
 
-    return response.json(user);
+    return response.status(201).json(user);
   }
 }
 
