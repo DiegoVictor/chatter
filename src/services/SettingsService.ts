@@ -1,4 +1,4 @@
-import { badRequest } from '@hapi/boom';
+import { badRequest, notFound } from '@hapi/boom';
 import { getCustomRepository, Repository } from 'typeorm';
 
 import Setting from '../entities/Setting';
@@ -40,7 +40,7 @@ class SettingsService {
   async update({ username, chat }: ISettingsCreate) {
     let settings = await this.settingsRepository.findOne({ username });
     if (!settings) {
-      throw badRequest('Setting not found', { code: 144 });
+      throw notFound('Setting not found', { code: 144 });
     }
 
     settings.chat = chat;
