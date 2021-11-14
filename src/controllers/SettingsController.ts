@@ -4,10 +4,10 @@ import SettingsService from '../services/SettingsService';
 
 class SettingsController {
   async show(request: Request, response: Response): Promise<Response> {
-    const { username } = request.params;
+    const { id } = request.params;
 
     const settingsService = new SettingsService();
-    const settings = await settingsService.getByUsername(username);
+    const settings = await settingsService.getById(id);
 
     return response.json(settings);
   }

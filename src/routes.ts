@@ -18,11 +18,7 @@ const usersController = new UsersController();
 const messagesController = new MessagesController();
 const usersMessagesController = new UsersMessagesController();
 
-app.get(
-  '/settings/:username',
-  usernameAndChatValidator,
-  settingsController.show
-);
+app.get('/settings/:id', idValidator, settingsController.show);
 app.post('/settings', createSettingsValidator, settingsController.store);
 app.put(
   '/settings/:username',
