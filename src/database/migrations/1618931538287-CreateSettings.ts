@@ -12,7 +12,7 @@ export class CreateSettings1618931538287 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: 'username',
+            name: 'user_id',
             type: 'varchar',
           },
           {
@@ -29,6 +29,16 @@ export class CreateSettings1618931538287 implements MigrationInterface {
             name: 'updated_at',
             type: 'timestamp',
             default: 'now()',
+          },
+        ],
+        foreignKeys: [
+          {
+            name: 'FKUser',
+            referencedTableName: 'users',
+            referencedColumnNames: ['id'],
+            columnNames: ['user_id'],
+            onUpdate: 'SET NULL',
+            onDelete: 'SET NULL',
           },
         ],
       })
