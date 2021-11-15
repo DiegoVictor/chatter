@@ -92,8 +92,8 @@ Instead of only throw a simple message and HTTP Status Code this API return frie
 ### Errors Reference
 |code|message|description
 |---|---|---
-|140|Setting already exists|Already exists a settings to provided `username`.
-|144|Setting not found|The provided `username` not references an existing setting in the database.
+|140|Setting already exists|Already exists a settings to provided `id`.
+|144|Setting not found|The provided `id` not references an existing setting in the database.
 |244|User not found|The user `id` sent does not references an existing user in the database.
 |245|User not found|Is not possible to retrieve messages from a user not found in the database.
 
@@ -126,7 +126,7 @@ Request body:
 }
 ```
 
-* `PUT /settings/:username`
+* `PUT /settings/:id`
 
 Request body:
 ```json
