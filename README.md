@@ -7,7 +7,7 @@
 [![coverage](https://img.shields.io/codecov/c/gh/DiegoVictor/chatter?logo=codecov&style=flat-square)](https://codecov.io/gh/DiegoVictor/chatter)
 [![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://github.com/DiegoVictor/chatter/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)<br>
-[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Chatter&uri=https%3A%2F%2Fraw.githubusercontent.com%2FDiegoVictor%2Fchatter%2Fmaster%2FInsomnia_2021-08-29.json)
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Chatter&uri=https%3A%2F%2Fraw.githubusercontent.com%2FDiegoVictor%2Fchatter%2Fmaster%2FInsomnia_2021-11-15.json)
 
 Permit to register users and its settings, also manage websocket connections and messages. The app has friendly errors, validation, also a simple versioning was made.
 
