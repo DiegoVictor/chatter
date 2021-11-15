@@ -5,6 +5,7 @@ import Setting from '../entities/Setting';
 import SettingsRepository from '../repositories/SettingsRepository';
 
 interface ISettingsCreate {
+  id?: string;
   chat: boolean;
   user_id?: string;
 }
@@ -16,8 +17,8 @@ class SettingsService {
     this.settingsRepository = getCustomRepository(SettingsRepository);
   }
 
-  async getByUsername(username: string) {
-    const settings = await this.settingsRepository.findOne({ username });
+  async getById(id: string) {
+    const settings = await this.settingsRepository.findOne(id);
 
     return settings;
   }
@@ -37,8 +38,8 @@ class SettingsService {
     return settings;
   }
 
-  async update({ username, chat }: ISettingsCreate) {
-    let settings = await this.settingsRepository.findOne({ username });
+  async update({ id, chat }: ISettingsCreate) {
+    let settings = await this.settingsRepository.findOne(id);
     if (!settings) {
       throw notFound('Setting not found', { code: 144 });
     }

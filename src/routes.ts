@@ -9,7 +9,7 @@ import createMessagesValidator from './validators/createMessagesValidator';
 import createSettingsValidator from './validators/createSettingsValidator';
 import emailValidator from './validators/emailValidator';
 import idValidator from './validators/idValidator';
-import usernameAndChatValidator from './validators/usernameAndChatValidator';
+import chatValidator from './validators/chatValidator';
 
 const app = Router();
 
@@ -20,11 +20,7 @@ const usersMessagesController = new UsersMessagesController();
 
 app.get('/settings/:id', idValidator, settingsController.show);
 app.post('/settings', createSettingsValidator, settingsController.store);
-app.put(
-  '/settings/:username',
-  usernameAndChatValidator,
-  settingsController.update
-);
+app.put('/settings/:id', idValidator, chatValidator, settingsController.update);
 
 app.post('/users', emailValidator, usersController.store);
 

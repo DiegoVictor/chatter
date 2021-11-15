@@ -13,7 +13,7 @@ class Setting {
   id: string;
 
   @Column()
-  username: string;
+  user_id: string;
 
   @Column()
   chat: boolean;
