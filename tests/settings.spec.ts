@@ -5,30 +5,39 @@ import faker from 'faker';
 import { http, io } from '../src/app';
 import Setting from '../src/entities/Setting';
 import factory from './utils/factory';
+import User from '../src/entities/User';
 
 describe('Settings', () => {
   let connection: Connection;
-  let repository: Repository<Setting>;
+  let settingsRepository: Repository<Setting>;
+  let usersRepository: Repository<User>;
 
   beforeAll(async () => {
     connection = await createConnection();
-    repository = connection.getRepository(Setting);
+    settingsRepository = connection.getRepository(Setting);
+    usersRepository = connection.getRepository(User);
   });
 
   beforeEach(async () => {
-    await repository.delete({});
+    await settingsRepository.delete({});
   });
 
   afterAll(async () => {
     io.close();
     http.close();
-    await repository.delete({});
+    await settingsRepository.delete({});
     await connection.close();
   });
 
   it('should be able to create a new setting', async () => {
-    const setting = await factory.attrs<Setting>('Setting');
-    const response = await request(http).post('/v1/settings').send(setting);
+    const user = await factory.attrs<User>('User');
+    const { id } = await usersRepository.save(usersRepository.create(user));
+
+    const setting = await factory.attrs<Setting>('Setting', { user_id: id });
+    const response = await request(http)
+      .post('/v1/settings')
+      .expect(201)
+      .send(setting);
 
     expect(response.body).toStrictEqual({
       ...setting,
@@ -39,8 +48,11 @@ describe('Settings', () => {
   });
 
   it('should not be able to duplicate a setting', async () => {
-    const setting = await factory.attrs<Setting>('Setting');
-    await repository.save(repository.create(setting));
+    const user = await factory.attrs<User>('User');
+    const { id } = await usersRepository.save(usersRepository.create(user));
+
+    const setting = await factory.attrs<Setting>('Setting', { user_id: id });
+    await settingsRepository.save(settingsRepository.create(setting));
 
     const response = await request(http)
       .post('/v1/settings')
@@ -57,47 +69,58 @@ describe('Settings', () => {
   });
 
   it('should be able to update a setting', async () => {
-    const setting = await factory.attrs<Setting>('Setting');
-    const { username, chat, id, created_at } = await repository.save(
-      repository.create(setting)
+    const user = await factory.attrs<User>('User');
+    const { id: user_id } = await usersRepository.save(
+      usersRepository.create(user)
     );
 
+    const setting = await factory
+      .attrs<Setting>('Setting', { user_id })
+      .then((setting) =>
+        settingsRepository.save(settingsRepository.create(setting))
+      );
+
     const response = await request(http)
-      .put(`/v1/settings/${username}`)
-      .send({ chat: !chat });
+      .put(`/v1/settings/${setting.id}`)
+      .send({ chat: !setting.chat });
 
     expect(response.body).toStrictEqual({
-      id,
-      username,
-      chat: !chat,
-      created_at: created_at.toISOString(),
+      id: setting.id,
+      user_id,
+      chat: !setting.chat,
+      created_at: setting.created_at.toISOString(),
       updated_at: expect.any(String),
     });
   });
 
   it('should not be able to update a non existing setting', async () => {
-    const username = faker.internet.userName();
+    const user_id = faker.datatype.uuid();
     const response = await request(http)
-      .put(`/v1/settings/${username}`)
-      .expect(400)
+      .put(`/v1/settings/${user_id}`)
+      .expect(404)
       .send({ chat: false });
 
     expect(response.body).toStrictEqual({
       code: 144,
       docs: process.env.DOCS_URL,
-      error: 'Bad Request',
+      error: 'Not Found',
       message: 'Setting not found',
-      statusCode: 400,
+      statusCode: 404,
     });
   });
 
   it('should be able to retrieve a setting', async () => {
-    const setting = await repository.save(
-      repository.create(await factory.attrs<Setting>('Setting'))
+    const user = await factory.attrs<User>('User');
+    const { id } = await usersRepository.save(usersRepository.create(user));
+
+    const setting = await settingsRepository.save(
+      settingsRepository.create(
+        await factory.attrs<Setting>('Setting', { user_id: id })
+      )
     );
 
     const response = await request(http)
-      .get(`/v1/settings/${setting.username}`)
+      .get(`/v1/settings/${setting.id}`)
       .send();
 
     expect(response.body).toStrictEqual({
