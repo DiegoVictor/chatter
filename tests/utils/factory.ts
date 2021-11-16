@@ -5,7 +5,7 @@ factory.define(
   'Setting',
   {},
   {
-    username: faker.internet.userName,
+    user_id: faker.datatype.uuid,
     chat: faker.datatype.boolean,
   }
 );
