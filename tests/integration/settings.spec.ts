@@ -2,10 +2,10 @@ import request from 'supertest';
 import { Connection, createConnection, Repository } from 'typeorm';
 import faker from 'faker';
 
-import { http, io } from '../src/app';
-import Setting from '../src/entities/Setting';
-import factory from './utils/factory';
-import User from '../src/entities/User';
+import { http, io } from '../../src/app';
+import Setting from '../../src/entities/Setting';
+import factory from '../utils/factory';
+import User from '../../src/entities/User';
 
 describe('Settings', () => {
   let connection: Connection;

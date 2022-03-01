@@ -8,12 +8,12 @@ import {
 } from 'typeorm';
 import faker from 'faker';
 
-import { http, io as server } from '../src/app';
-import Connection from '../src/entities/Connection';
-import '../src/websocket/admin';
-import factory from './utils/factory';
-import User from '../src/entities/User';
-import Message from '../src/entities/Message';
+import { http, io as server } from '../../src/app';
+import Connection from '../../src/entities/Connection';
+import '../../src/websocket/admin';
+import factory from '../utils/factory';
+import User from '../../src/entities/User';
+import Message from '../../src/entities/Message';
 import { Boom, notFound } from '@hapi/boom';
 
 global.Promise = jest.requireActual('promise');

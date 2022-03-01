@@ -7,12 +7,12 @@ import {
   Repository,
 } from 'typeorm';
 
-import { http, io as server } from '../src/app';
-import Connection from '../src/entities/Connection';
-import '../src/websocket/client';
-import factory from './utils/factory';
-import User from '../src/entities/User';
-import Message from '../src/entities/Message';
+import { http, io as server } from '../../src/app';
+import Connection from '../../src/entities/Connection';
+import '../../src/websocket/client';
+import factory from '../utils/factory';
+import User from '../../src/entities/User';
+import Message from '../../src/entities/Message';
 
 global.Promise = jest.requireActual('promise');
 jest.setTimeout(10000);

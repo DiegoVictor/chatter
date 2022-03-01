@@ -1,9 +1,9 @@
 import request from 'supertest';
 import { Connection, createConnection, Repository } from 'typeorm';
 
-import { http, io } from '../src/app';
-import User from '../src/entities/User';
-import factory from './utils/factory';
+import { http, io } from '../../src/app';
+import User from '../../src/entities/User';
+import factory from '../utils/factory';
 
 describe('Users', () => {
   let connection: Connection;
