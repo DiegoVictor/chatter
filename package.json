@@ -12,6 +12,7 @@
     "posttest": "rm src/database/test.sqlite"
   },
   "dependencies": {
+    "@faker-js/faker": "^6.3.1",
     "@hapi/boom": "^9.1.2",
     "@types/ejs": "^3.0.6",
     "celebrate": "^14.0.0",
@@ -50,7 +51,6 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.4.0",
     "factory-girl": "^5.0.4",
-    "faker": "^5.5.3",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
     "promise": "^8.1.0",
