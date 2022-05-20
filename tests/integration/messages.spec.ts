@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { Connection, createConnection, Repository } from 'typeorm';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { http, io } from '../../src/app';
 import Message from '../../src/entities/Message';

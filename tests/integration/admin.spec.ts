@@ -6,7 +6,7 @@ import {
   getRepository,
   Repository,
 } from 'typeorm';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { http, io as server } from '../../src/app';
 import Connection from '../../src/entities/Connection';
