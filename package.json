@@ -12,7 +12,6 @@
     "posttest": "rm src/database/test.sqlite"
   },
   "dependencies": {
-    "@faker-js/faker": "^6.3.1",
     "@hapi/boom": "^9.1.2",
     "@types/ejs": "^3.0.6",
     "celebrate": "^14.0.0",
@@ -31,6 +30,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "^6.3.1",
     "@types/cors": "^2.8.10",
     "@types/express": "^4.17.11",
     "@types/factory-girl": "^5.0.5",
