@@ -9,14 +9,14 @@ jobs:
       PORT: '3333'
       DOCS_URL: 'https://github.com/DiegoVictor/chatter#errors-reference'
     steps:
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run coverage
         run: |
           npm ci
           npm run test
-      - uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v3
         with:
           directory: ./tests/coverage/
