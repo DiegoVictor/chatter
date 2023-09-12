@@ -7,7 +7,7 @@ factory.define(
   {
     user_id: faker.string.uuid,
     chat: faker.datatype.boolean,
-  }
+  },
 );
 
 factory.define(
@@ -15,7 +15,7 @@ factory.define(
   {},
   {
     email: faker.internet.email,
-  }
+  },
 );
 
 factory.define(
@@ -23,7 +23,7 @@ factory.define(
   {},
   {
     text: faker.lorem.sentence,
-  }
+  },
 );
 
 export default factory;

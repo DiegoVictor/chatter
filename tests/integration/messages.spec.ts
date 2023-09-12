@@ -35,7 +35,7 @@ describe('Messages', () => {
   it('should be able to create a new message', async () => {
     const user = await factory.attrs<User>('User');
     const { id: user_id } = await usersRepository.save(
-      usersRepository.create(user)
+      usersRepository.create(user),
     );
 
     const message = await factory.attrs<Message>('Message', { user_id });

@@ -58,13 +58,15 @@ describe('Admin Socket', () => {
 
   it('should be able to get pending connections', async (done) => {
     const user = await factory.attrs<User>('User');
-    const { id: user_id, created_at, email } = await usersRepository.save(
-      usersRepository.create(user)
-    );
+    const {
+      id: user_id,
+      created_at,
+      email,
+    } = await usersRepository.save(usersRepository.create(user));
 
     const socket_id = faker.string.uuid();
     const connection = await connectionsRepository.save(
-      connectionsRepository.create({ user_id, socket_id })
+      connectionsRepository.create({ user_id, socket_id }),
     );
 
     const socket = io(
@@ -75,7 +77,7 @@ describe('Admin Socket', () => {
         forceNew: true,
         port: String(serverAddress.port),
         transports: ['websocket'],
-      }
+      },
     );
 
     socket.on('admin_list_pending', (connectionPending: Connection[]) => {
@@ -107,7 +109,7 @@ describe('Admin Socket', () => {
 
     const message = await factory.attrs<Message>('Message', { user_id });
     const { created_at, id, text } = await messagesRepository.save(
-      messagesRepository.create(message)
+      messagesRepository.create(message),
     );
 
     const socket = io(
@@ -118,7 +120,7 @@ describe('Admin Socket', () => {
         forceNew: true,
         port: String(serverAddress.port),
         transports: ['websocket'],
-      }
+      },
     );
 
     socket.on('admin_list_pending', () => {
@@ -150,7 +152,7 @@ describe('Admin Socket', () => {
   it('should not be able to get messages from non existing user', async (done) => {
     const user = await factory.attrs<User>('User');
     const { id: user_id } = await usersRepository.save(
-      usersRepository.create(user)
+      usersRepository.create(user),
     );
 
     const message = await factory.attrs<Message>('Message', { user_id });
@@ -164,7 +166,7 @@ describe('Admin Socket', () => {
         forceNew: true,
         port: String(serverAddress.port),
         transports: ['websocket'],
-      }
+      },
     );
 
     socket.on('admin_list_pending', async () => {
@@ -186,7 +188,7 @@ describe('Admin Socket', () => {
   it('should be able to receive admin message', async (done) => {
     const user = await factory.attrs<User>('User');
     const { id: user_id } = await usersRepository.save(
-      usersRepository.create(user)
+      usersRepository.create(user),
     );
     const message = await factory.attrs<Message>('Message', { user_id });
 
@@ -198,7 +200,7 @@ describe('Admin Socket', () => {
         forceNew: true,
         port: String(serverAddress.port),
         transports: ['websocket'],
-      }
+      },
     );
 
     socket.on('admin_list_pending', async () => {
@@ -223,9 +225,11 @@ describe('Admin Socket', () => {
 
   it('should be able to set connection as handled', async (done) => {
     const user = await factory.attrs<User>('User');
-    const { id: user_id, email, created_at } = await usersRepository.save(
-      usersRepository.create(user)
-    );
+    const {
+      id: user_id,
+      email,
+      created_at,
+    } = await usersRepository.save(usersRepository.create(user));
 
     const socket = io(
       `http://[${serverAddress.address}]:${serverAddress.port}`,
@@ -235,7 +239,7 @@ describe('Admin Socket', () => {
         forceNew: true,
         port: String(serverAddress.port),
         transports: ['websocket'],
-      }
+      },
     );
 
     let connection: Connection;
@@ -270,7 +274,7 @@ describe('Admin Socket', () => {
               created_at: created_at.toISOString(),
             },
           });
-        }
+        },
       );
 
       const { admin_id } = await connectionsRepository.findOne(connection.id);

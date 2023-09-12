@@ -71,13 +71,13 @@ describe('Settings', () => {
   it('should be able to update a setting', async () => {
     const user = await factory.attrs<User>('User');
     const { id: user_id } = await usersRepository.save(
-      usersRepository.create(user)
+      usersRepository.create(user),
     );
 
     const setting = await factory
       .attrs<Setting>('Setting', { user_id })
       .then((setting) =>
-        settingsRepository.save(settingsRepository.create(setting))
+        settingsRepository.save(settingsRepository.create(setting)),
       );
 
     const response = await request(http)
@@ -115,8 +115,8 @@ describe('Settings', () => {
 
     const setting = await settingsRepository.save(
       settingsRepository.create(
-        await factory.attrs<Setting>('Setting', { user_id: id })
-      )
+        await factory.attrs<Setting>('Setting', { user_id: id }),
+      ),
     );
 
     const response = await request(http)

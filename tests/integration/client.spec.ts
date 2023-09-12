@@ -67,7 +67,7 @@ describe('Client Socket', () => {
         forceNew: true,
         port: String(serverAddress.port),
         transports: ['websocket'],
-      }
+      },
     );
 
     socket.on('connect', () => {
@@ -119,9 +119,11 @@ describe('Client Socket', () => {
 
   it('should be able to send initial message on already existing connection', async (done) => {
     const user = await factory.attrs<User>('User');
-    const { id: user_id, email, created_at } = await usersRepository.save(
-      usersRepository.create(user)
-    );
+    const {
+      id: user_id,
+      email,
+      created_at,
+    } = await usersRepository.save(usersRepository.create(user));
     const { text } = await factory.attrs<Message>('Message');
 
     const socket = io(
@@ -132,7 +134,7 @@ describe('Client Socket', () => {
         forceNew: true,
         port: String(serverAddress.port),
         transports: ['websocket'],
-      }
+      },
     );
 
     let connection: Connection;
@@ -188,7 +190,7 @@ describe('Client Socket', () => {
       factory.attrs<User>('User'),
     ]);
     const { id: user_id } = await usersRepository.save(
-      usersRepository.create(user)
+      usersRepository.create(user),
     );
 
     const socket = io(
@@ -199,7 +201,7 @@ describe('Client Socket', () => {
         forceNew: true,
         port: String(serverAddress.port),
         transports: ['websocket'],
-      }
+      },
     );
 
     const adminSocket = io(
@@ -210,7 +212,7 @@ describe('Client Socket', () => {
         forceNew: true,
         port: String(serverAddress.port),
         transports: ['websocket'],
-      }
+      },
     );
 
     socket.on('connect', () => {
