@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { Connection, createConnection, Repository } from 'typeorm';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 import { http, io } from '../../src/app';
 import Message from '../../src/entities/Message';
@@ -49,7 +49,7 @@ describe('Messages', () => {
   });
 
   it('should not be able to create a new message with non existing user', async () => {
-    const user_id = faker.datatype.uuid();
+    const user_id = faker.string.uuid();
     const message = await factory.attrs<Message>('Message', { user_id });
 
     const response = await request(http)

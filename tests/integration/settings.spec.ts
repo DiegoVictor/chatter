@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { Connection, createConnection, Repository } from 'typeorm';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 import { http, io } from '../../src/app';
 import Setting from '../../src/entities/Setting';
@@ -94,7 +94,7 @@ describe('Settings', () => {
   });
 
   it('should not be able to update a non existing setting', async () => {
-    const user_id = faker.datatype.uuid();
+    const user_id = faker.string.uuid();
     const response = await request(http)
       .put(`/v1/settings/${user_id}`)
       .expect(404)

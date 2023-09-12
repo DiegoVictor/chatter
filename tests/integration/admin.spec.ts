@@ -6,7 +6,7 @@ import {
   getRepository,
   Repository,
 } from 'typeorm';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 import { http, io as server } from '../../src/app';
 import Connection from '../../src/entities/Connection';
@@ -62,7 +62,7 @@ describe('Admin Socket', () => {
       usersRepository.create(user)
     );
 
-    const socket_id = faker.datatype.uuid();
+    const socket_id = faker.string.uuid();
     const connection = await connectionsRepository.save(
       connectionsRepository.create({ user_id, socket_id })
     );

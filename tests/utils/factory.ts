@@ -1,11 +1,11 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import factory from 'factory-girl';
 
 factory.define(
   'Setting',
   {},
   {
-    user_id: faker.datatype.uuid,
+    user_id: faker.string.uuid,
     chat: faker.datatype.boolean,
   }
 );
