@@ -55,7 +55,7 @@ describe('Client Socket', () => {
     await connection.close();
   });
 
-  it('should be able to send initial message', async (done) => {
+  it('should be able to send initial message', async () => {
     const { email } = await factory.attrs<User>('User');
     const { text } = await factory.attrs<Message>('Message');
 
@@ -70,54 +70,58 @@ describe('Client Socket', () => {
       },
     );
 
-    socket.on('connect', () => {
-      socket.emit('client_first_access', { email, text });
-    });
-
-    socket.on('client_list_messages', async (messages: Message[]) => {
-      const user = await usersRepository.findOne({ email });
-      const connection = await connectionsRepository.findOne({
-        user_id: user.id,
+    const { messages, connectionPending } = await new Promise<{
+      messages: Message[];
+      connectionPending: Connection[];
+    }>((resolve) => {
+      socket.on('connect', () => {
+        socket.emit('client_first_access', { email, text });
       });
 
-      expect(user).toBeTruthy();
-      expect(connection).toBeTruthy();
-
-      socket.on('admin_list_pending', (connectionPending: Connection[]) => {
-        expect(connectionPending).toContainEqual({
-          id: connection.id,
-          admin_id: null,
-          socket_id: socket.id,
-          user_id: user.id,
-          created_at: connection.created_at.toISOString(),
-          updated_at: connection.updated_at.toISOString(),
-          user: {
-            id: user.id,
-            email,
-            created_at: user.created_at.toISOString(),
-          },
+      socket.on('client_list_messages', async (messages: Message[]) => {
+        socket.on('admin_list_pending', (connectionPending: Connection[]) => {
+          resolve({ messages, connectionPending });
         });
       });
-
-      expect(messages).toContainEqual({
-        admin_id: null,
-        id: expect.any(String),
-        created_at: expect.any(String),
-        text,
-        user_id: user.id,
-        user: {
-          id: user.id,
-          email,
-          created_at: user.created_at.toISOString(),
-        },
-      });
-
-      socket.close();
-      done();
     });
+
+    const user = await usersRepository.findOne({ email });
+    const connection = await connectionsRepository.findOne({
+      user_id: user.id,
+    });
+
+    expect(user).toBeTruthy();
+    expect(connection).toBeTruthy();
+    expect(messages).toContainEqual({
+      admin_id: null,
+      id: expect.any(String),
+      created_at: expect.any(String),
+      text,
+      user_id: user.id,
+      user: {
+        id: user.id,
+        email,
+        created_at: user.created_at.toISOString(),
+      },
+    });
+    expect(connectionPending).toContainEqual({
+      id: connection.id,
+      admin_id: null,
+      socket_id: socket.id,
+      user_id: user.id,
+      created_at: connection.created_at.toISOString(),
+      updated_at: connection.updated_at.toISOString(),
+      user: {
+        id: user.id,
+        email,
+        created_at: user.created_at.toISOString(),
+      },
+    });
+
+    socket.close();
   });
 
-  it('should be able to send initial message on already existing connection', async (done) => {
+  it('should be able to send initial message on already existing connection', async () => {
     const user = await factory.attrs<User>('User');
     const {
       id: user_id,
@@ -137,54 +141,65 @@ describe('Client Socket', () => {
       },
     );
 
-    let connection: Connection;
-    socket.on('connect', async () => {
-      connection = await connectionsRepository.save(
-        connectionsRepository.create({
-          socket_id: socket.id,
-          user_id,
-        })
-      );
+    const { messages, connectionPending, connection } = await new Promise<{
+      messages: Message[];
+      connectionPending: Connection[];
+      connection: Connection;
+    }>((resolve) => {
+      let connection: Connection;
 
-      socket.emit('client_first_access', { email: user.email, text });
-    });
+      socket.on('connect', async () => {
+        connection = await connectionsRepository.save(
+          connectionsRepository.create({
+            socket_id: socket.id,
+            user_id,
+          }),
+        );
 
-    socket.on('client_list_messages', async (messages: Message[]) => {
-      socket.on('admin_list_pending', (connectionPending: Connection[]) => {
-        expect(connectionPending).toContainEqual({
-          id: connection.id,
-          admin_id: null,
-          socket_id: socket.id,
-          user_id: user.id,
-          created_at: connection.created_at.toISOString(),
-          updated_at: connection.updated_at.toISOString(),
-          user: {
-            id: user.id,
-            email: email,
-            created_at: created_at.toISOString(),
-          },
+        socket.emit('client_first_access', { email: user.email, text });
+      });
+
+      socket.on('client_list_messages', async (messages: Message[]) => {
+        socket.on('admin_list_pending', (connectionPending: Connection[]) => {
+          resolve({
+            messages,
+            connectionPending,
+            connection,
+          });
         });
       });
-
-      expect(messages).toContainEqual({
-        admin_id: null,
-        id: expect.any(String),
-        created_at: expect.any(String),
-        text,
-        user_id: user_id,
-        user: {
-          id: user_id,
-          email: email,
-          created_at: created_at.toISOString(),
-        },
-      });
-
-      socket.close();
-      done();
     });
+
+    expect(messages).toContainEqual({
+      admin_id: null,
+      id: expect.any(String),
+      created_at: expect.any(String),
+      text,
+      user_id: user_id,
+      user: {
+        id: user_id,
+        email: email,
+        created_at: created_at.toISOString(),
+      },
+    });
+    expect(connectionPending).toContainEqual({
+      id: connection.id,
+      admin_id: null,
+      socket_id: socket.id,
+      user_id: user_id,
+      created_at: connection.created_at.toISOString(),
+      updated_at: connection.updated_at.toISOString(),
+      user: {
+        id: user_id,
+        email: email,
+        created_at: created_at.toISOString(),
+      },
+    });
+
+    socket.close();
   });
 
-  it('should be able to send messages', async (done) => {
+  it('should be able to send messages', async () => {
     const [{ text }, user] = await Promise.all([
       factory.attrs<Message>('Message'),
       factory.attrs<User>('User'),
@@ -215,34 +230,42 @@ describe('Client Socket', () => {
       },
     );
 
-    socket.on('connect', () => {
-      adminSocket.on('connect', async () => {
-        await connectionsRepository.save(
-          connectionsRepository.create({
-            admin_id: adminSocket.id,
-            socket_id: socket.id,
-            user_id,
-          })
-        );
+    const { message, socket_id } = await new Promise<{
+      message: Message;
+      socket_id: string;
+    }>((resolve) => {
+      socket.on('connect', () => {
+        adminSocket.on('connect', async () => {
+          await connectionsRepository.save(
+            connectionsRepository.create({
+              admin_id: adminSocket.id,
+              socket_id: socket.id,
+              user_id,
+            }),
+          );
 
-        socket.emit('client_sent_message', {
-          text,
-          admin_socket_id: adminSocket.id,
+          socket.emit('client_sent_message', {
+            text,
+            admin_socket_id: adminSocket.id,
+          });
+        });
+      });
+      adminSocket.on('admin_receive_message', ({ message, socket_id }) => {
+        resolve({
+          socket_id,
+          message,
         });
       });
     });
 
-    adminSocket.on('admin_receive_message', ({ message, socket_id }) => {
-      expect(socket_id).toBe(socket.id);
-      expect(message).toStrictEqual({
-        id: expect.any(String),
-        created_at: expect.any(String),
-        text,
-        user_id: user_id,
-      });
-
-      socket.close();
-      done();
+    expect(socket_id).toBe(socket.id);
+    expect(message).toStrictEqual({
+      id: expect.any(String),
+      created_at: expect.any(String),
+      text,
+      user_id: user_id,
     });
+
+    socket.close();
   });
 });

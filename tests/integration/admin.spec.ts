@@ -56,7 +56,7 @@ describe('Admin Socket', () => {
     await connection.close();
   });
 
-  it('should be able to get pending connections', async (done) => {
+  it('should be able to get pending connections', async () => {
     const user = await factory.attrs<User>('User');
     const {
       id: user_id,
@@ -80,26 +80,29 @@ describe('Admin Socket', () => {
       },
     );
 
-    socket.on('admin_list_pending', (connectionPending: Connection[]) => {
-      expect(connectionPending).toContainEqual({
-        id: connection.id,
-        admin_id: null,
-        socket_id,
-        user_id,
-        created_at: connection.created_at.toISOString(),
-        updated_at: connection.updated_at.toISOString(),
-        user: {
-          id: user_id,
-          email,
-          created_at: created_at.toISOString(),
-        },
+    const connectionPending = await new Promise((resolve) => {
+      socket.on('admin_list_pending', (connectionPending: Connection[]) => {
+        resolve(connectionPending);
+        socket.close();
       });
-      socket.close();
-      done();
+    });
+
+    expect(connectionPending).toContainEqual({
+      id: connection.id,
+      admin_id: null,
+      socket_id,
+      user_id,
+      created_at: connection.created_at.toISOString(),
+      updated_at: connection.updated_at.toISOString(),
+      user: {
+        id: user_id,
+        email,
+        created_at: created_at.toISOString(),
+      },
     });
   });
 
-  it('should be able to get user messages', async (done) => {
+  it('should be able to get user messages', async () => {
     const user = await factory.attrs<User>('User');
     const {
       id: user_id,
@@ -123,33 +126,34 @@ describe('Admin Socket', () => {
       },
     );
 
-    socket.on('admin_list_pending', () => {
-      socket.emit(
-        'admin_list_messages_by_user',
-        { user_id },
-        (messages: Message[]) => {
-          setTimeout(() => {
-            expect(messages).toContainEqual({
-              id,
-              admin_id: null,
-              text,
-              user_id,
-              created_at: created_at.toISOString(),
-              user: {
-                id: user_id,
-                email,
-                created_at: user_created_at.toISOString(),
-              },
-            });
+    const messages = await new Promise((resolve) => {
+      socket.on('admin_list_pending', () => {
+        socket.emit(
+          'admin_list_messages_by_user',
+          { user_id },
+          (messages: Message[]) => {
             socket.close();
-            done();
-          }, 50);
-        }
-      );
+            resolve(messages);
+          },
+        );
+      });
+    });
+
+    expect(messages).toContainEqual({
+      id,
+      admin_id: null,
+      text,
+      user_id,
+      created_at: created_at.toISOString(),
+      user: {
+        id: user_id,
+        email,
+        created_at: user_created_at.toISOString(),
+      },
     });
   });
 
-  it('should not be able to get messages from non existing user', async (done) => {
+  it('should not be able to get messages from non existing user', async () => {
     const user = await factory.attrs<User>('User');
     const { id: user_id } = await usersRepository.save(
       usersRepository.create(user),
@@ -169,23 +173,26 @@ describe('Admin Socket', () => {
       },
     );
 
-    socket.on('admin_list_pending', async () => {
-      socket.emit(
-        'admin_list_messages_by_user',
-        {
-          user_id: faker.datatype.uuid(),
-        },
-        (err: Boom) => {
-          const boomError = notFound('User not found', { code: 245 });
-          expect(err).toStrictEqual({ ...boomError });
-          socket.close();
-          done();
-        }
-      );
+    await new Promise((_, reject) => {
+      socket.on('admin_list_pending', async () => {
+        socket.emit(
+          'admin_list_messages_by_user',
+          {
+            user_id: faker.string.uuid(),
+          },
+          (err: Boom) => {
+            socket.close();
+            reject(err);
+          },
+        );
+      });
+    }).catch((err) => {
+      const boomError = notFound('User not found', { code: 245 });
+      expect(err).toStrictEqual({ ...boomError });
     });
   });
 
-  it('should be able to receive admin message', async (done) => {
+  it('should be able to receive admin message', async () => {
     const user = await factory.attrs<User>('User');
     const { id: user_id } = await usersRepository.save(
       usersRepository.create(user),
@@ -203,27 +210,34 @@ describe('Admin Socket', () => {
       },
     );
 
-    socket.on('admin_list_pending', async () => {
-      await connectionsRepository.save(
-        connectionsRepository.create({
-          socket_id: socket.id,
-          user_id,
-        })
-      );
+    const { text, socket_id } = await new Promise<{
+      text: string;
+      socket_id: string;
+    }>((resolve) => {
+      socket.on('admin_list_pending', async () => {
+        await connectionsRepository.save(
+          connectionsRepository.create({
+            socket_id: socket.id,
+            user_id,
+          }),
+        );
 
-      socket.on('admin_sent_message', ({ text, socket_id }) => {
-        expect({ text, socket_id }).toStrictEqual({
-          text: message.text,
-          socket_id: expect.any(String),
+        socket.on('admin_sent_message', ({ text, socket_id }) => {
+          resolve({ text, socket_id });
+          socket.close();
         });
-        socket.close();
-        done();
+
+        socket.emit('admin_send_message', { user_id, text: message.text });
       });
-      socket.emit('admin_send_message', { user_id, text: message.text });
+    });
+
+    expect({ text, socket_id }).toStrictEqual({
+      text: message.text,
+      socket_id: expect.any(String),
     });
   });
 
-  it('should be able to set connection as handled', async (done) => {
+  it('should be able to set connection as handled', async () => {
     const user = await factory.attrs<User>('User');
     const {
       id: user_id,
@@ -242,22 +256,9 @@ describe('Admin Socket', () => {
       },
     );
 
-    let connection: Connection;
-    socket.on('connect', async () => {
-      connection = await connectionsRepository.save(
-        connectionsRepository.create({
-          socket_id: socket.id,
-          user_id,
-        })
-      );
+    await new Promise((resolve) => {
+      let connection: Connection;
 
-      socket.emit('admin_user_in_support', {
-        user_id,
-        user_socket_id: socket.id,
-      });
-    });
-
-    socket.on('set_admin_socket_id', async ({ socket_id }) => {
       socket.on(
         'admin_list_pending',
         async (connectionPending: Connection[]) => {
@@ -277,12 +278,29 @@ describe('Admin Socket', () => {
         },
       );
 
-      const { admin_id } = await connectionsRepository.findOne(connection.id);
-      expect(admin_id).not.toBe(null);
+      socket.on('set_admin_socket_id', async ({ socket_id }) => {
+        const { admin_id } = await connectionsRepository.findOne(connection.id);
 
-      expect(socket_id).toBe(socket.id);
-      socket.close();
-      done();
+        expect(admin_id).not.toBe(null);
+        expect(socket_id).toBe(socket.id);
+
+        socket.close();
+        resolve(true);
+      });
+
+      socket.on('connect', async () => {
+        connection = await connectionsRepository.save(
+          connectionsRepository.create({
+            socket_id: socket.id,
+            user_id,
+          }),
+        );
+
+        socket.emit('admin_user_in_support', {
+          user_id,
+          user_socket_id: socket.id,
+        });
+      });
     });
   });
 });
