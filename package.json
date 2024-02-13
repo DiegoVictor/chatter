@@ -25,7 +25,6 @@
     "socket.io": "^4.0.1",
     "socket.io-client": "^4.0.1",
     "sqlite3": "^5.0.2",
-    "swagger-ui-express": "^5.0.0",
     "typeorm": "^0.2.32",
     "uuid": "^9.0.0"
   },

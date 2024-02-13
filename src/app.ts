@@ -9,9 +9,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import path from 'path';
 import { renderFile } from 'ejs';
-import swagger from 'swagger-ui-express';
 
-import swaggerDocument from './swagger.json';
 import './database';
 import routes from './routes';
 
@@ -26,7 +24,7 @@ app.use(cors());
 app.use(
   helmet({
     contentSecurityPolicy: false,
-  })
+  }),
 );
 app.use(express.json());
 
@@ -42,7 +40,6 @@ app.get('/pages/admin', (request: Request, response: Response) => {
   return response.render('html/admin.html');
 });
 
-app.use('/docs', swagger.serve, swagger.setup(swaggerDocument));
 app.use('/v1', routes);
 
 app.use(errors());
@@ -51,7 +48,7 @@ app.use(
     error: Error,
     request: Request,
     response: Response,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     if (isBoom(error)) {
       const { statusCode, payload } = error.output;
@@ -64,7 +61,7 @@ app.use(
     }
 
     return next(error);
-  }
+  },
 );
 
 export { http, io };
