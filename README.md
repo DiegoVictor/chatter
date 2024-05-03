@@ -1,9 +1,9 @@
 # Chatter
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/DiegoVictor/chatter/config.yml?logo=github&style=flat-square)](https://github.com/DiegoVictor/chatter/actions)
-[![typescript](https://img.shields.io/badge/typescript-5.2.2-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![eslint](https://img.shields.io/badge/eslint-8.48.0-4b32c3?style=flat-square&logo=eslint)](https://eslint.org/)
+[![typescript](https://img.shields.io/badge/typescript-5.4.5-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![eslint](https://img.shields.io/badge/eslint-8.57.0-4b32c3?style=flat-square&logo=eslint)](https://eslint.org/)
 [![airbnb-style](https://flat.badgen.net/badge/style-guide/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
-[![jest](https://img.shields.io/badge/jest-29.6.4-brightgreen?style=flat-square&logo=jest)](https://jestjs.io/)
+[![jest](https://img.shields.io/badge/jest-29.7.0-brightgreen?style=flat-square&logo=jest)](https://jestjs.io/)
 [![coverage](https://img.shields.io/codecov/c/gh/DiegoVictor/chatter?logo=codecov&style=flat-square)](https://codecov.io/gh/DiegoVictor/chatter)
 [![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://raw.githubusercontent.com/DiegoVictor/chatter/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)<br>
