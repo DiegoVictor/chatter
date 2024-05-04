@@ -23,6 +23,7 @@ export class CreateConnections1619100767826 implements MigrationInterface {
           {
             name: 'socket_id',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'created_at',
@@ -45,7 +46,7 @@ export class CreateConnections1619100767826 implements MigrationInterface {
             onDelete: 'SET NULL',
           },
         ],
-      })
+      }),
     );
   }
 
