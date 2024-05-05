@@ -32,10 +32,10 @@ app.set('views', publicPath);
 app.engine('html', renderFile);
 app.set('view engine', 'html');
 
-app.get('/pages/client', (request: Request, response: Response) => {
+app.get('/pages/client', (_: Request, response: Response) => {
   return response.render('html/client.html');
 });
-app.get('/pages/admin', (request: Request, response: Response) => {
+app.get('/pages/admin', (_: Request, response: Response) => {
   return response.render('html/admin.html');
 });
 
@@ -43,12 +43,7 @@ app.use('/v1', routes);
 
 app.use(errors());
 app.use(
-  async (
-    error: Error,
-    request: Request,
-    response: Response,
-    next: NextFunction,
-  ) => {
+  async (error: Error, _: Request, response: Response, next: NextFunction) => {
     if (isBoom(error)) {
       const { statusCode, payload } = error.output;
 
