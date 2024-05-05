@@ -9,9 +9,8 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import path from 'path';
 import { renderFile } from 'ejs';
-
-import './database';
-import routes from './routes';
+import './database/datasource';
+import { routes } from './routes';
 
 const app = express();
 
