@@ -7,11 +7,10 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
-
-import User from './User';
+import { User } from './User';
 
 @Entity('messages')
-class Message {
+export class Message {
   @PrimaryColumn()
   id: string;
 
@@ -37,5 +36,3 @@ class Message {
     }
   }
 }
-
-export default Message;
