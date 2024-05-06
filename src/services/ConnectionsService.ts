@@ -28,7 +28,7 @@ class ConnectionsService {
 
   async getPending() {
     return await this.connectionsRepository.find({
-      where: { admin_id: null },
+      where: { admin_id: IsNull() },
       relations: ['user'],
     });
   }
