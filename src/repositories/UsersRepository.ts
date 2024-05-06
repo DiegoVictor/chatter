@@ -1,8 +1,4 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { User } from '../entities/User';
+import { AppDataSource } from '../database/datasource';
 
-import User from '../entities/User';
-
-@EntityRepository(User)
-class UsersRepository extends Repository<User> {}
-
-export default UsersRepository;
+export const UsersRepository = AppDataSource.getRepository(User);
