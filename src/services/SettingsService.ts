@@ -18,13 +18,13 @@ class SettingsService {
   }
 
   async getById(id: string) {
-    const settings = await this.settingsRepository.findOne(id);
+    const settings = await this.settingsRepository.findOneBy({ id });
 
     return settings;
   }
 
   async store({ user_id, chat }: ISettingsCreate) {
-    if (await this.settingsRepository.findOne({ user_id })) {
+    if (await this.settingsRepository.findOneBy({ user_id })) {
       throw badRequest('Setting already exists', { code: 140 });
     }
 
@@ -39,7 +39,7 @@ class SettingsService {
   }
 
   async update({ id, chat }: ISettingsCreate) {
-    let settings = await this.settingsRepository.findOne(id);
+    let settings = await this.settingsRepository.findOneBy({ id });
     if (!settings) {
       throw notFound('Setting not found', { code: 144 });
     }

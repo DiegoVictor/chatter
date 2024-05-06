@@ -22,7 +22,7 @@ class MessagesServices {
   }
 
   async listByUserId(user_id: string) {
-    const user = await this.usersRepository.findOne(user_id);
+    const user = await this.usersRepository.findOneBy({ id: user_id });
     if (!user) {
       throw notFound('User not found', { code: 245 });
     }
@@ -36,7 +36,7 @@ class MessagesServices {
   }
 
   async store({ admin_id, user_id, text }: IMessageCreate) {
-    const user = await this.usersRepository.findOne(user_id);
+    const user = await this.usersRepository.findOneBy({ id: user_id });
     if (!user) {
       throw notFound('User not found', { code: 244 });
     }

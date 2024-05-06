@@ -34,7 +34,7 @@ class ConnectionsService {
   }
 
   async getBySocketId(socket_id: string) {
-    return await this.connectionsRepository.findOne({ socket_id });
+    return await this.connectionsRepository.findOneBy({ socket_id });
   }
 
   async setAdminId(user_id: string, admin_id: string) {

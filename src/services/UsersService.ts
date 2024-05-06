@@ -11,13 +11,13 @@ class UsersService {
   }
 
   async show(email: string) {
-    const user = await this.usersRepository.findOne({ email });
+    const user = await this.usersRepository.findOneBy({ email });
 
     return user;
   }
 
   async store(email: string) {
-    let user = await this.usersRepository.findOne({ email });
+    let user = await this.usersRepository.findOneBy({ email });
     if (user) {
       return user;
     }
