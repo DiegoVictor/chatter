@@ -1,6 +1,19 @@
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { AppDataSource } from '../database/datasource';
 import { Connection } from '../entities/Connection';
 
-export type IConnectionsRepository = Repository<Connection>;
-export const ConnectionsRepository = AppDataSource.getRepository(Connection);
+export type IConnectionsRepository = Repository<Connection> & {
+  getPending: () => Promise<Connection[]>;
+};
+
+const ConnectionsRepository = AppDataSource.getRepository(Connection);
+ConnectionsRepository.extend({
+  getPending() {
+    return this.createQueryBuilder('connections')
+      .where({ admin_id: IsNull() })
+      .leftJoinAndSelect('connections.user', 'user')
+      .getMany();
+  },
+});
+
+export { ConnectionsRepository };
