@@ -1,7 +1,4 @@
-import { getCustomRepository, Repository } from 'typeorm';
-
-import Connection from '../entities/Connection';
-import ConnectionsRepository from '../repositories/ConnectionsRepository';
+import { IConnectionsRepository } from '../repositories/ConnectionsRepository';
 
 interface IConnectionCreate {
   socket_id: string;
@@ -10,12 +7,8 @@ interface IConnectionCreate {
   id?: string;
 }
 
-class ConnectionsService {
-  private connectionsRepository: Repository<Connection>;
-
-  constructor() {
-    this.connectionsRepository = getCustomRepository(ConnectionsRepository);
-  }
+export class ConnectionsService {
+  constructor(private connectionsRepository: IConnectionsRepository) {}
 
   async getByUserId(user_id: string) {
     const connection = await this.connectionsRepository.findOne({
@@ -27,14 +20,11 @@ class ConnectionsService {
   }
 
   async getPending() {
-    return await this.connectionsRepository.find({
-      where: { admin_id: IsNull() },
-      relations: ['user'],
-    });
+    return this.connectionsRepository.getPending();
   }
 
   async getBySocketId(socket_id: string) {
-    return await this.connectionsRepository.findOneBy({ socket_id });
+    return this.connectionsRepository.findOneBy({ socket_id });
   }
 
   async setAdminId(user_id: string, admin_id: string) {
@@ -54,5 +44,3 @@ class ConnectionsService {
     return connection;
   }
 }
-
-export default ConnectionsService;
