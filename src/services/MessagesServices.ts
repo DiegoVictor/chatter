@@ -1,10 +1,6 @@
 import { notFound } from '@hapi/boom';
-import { getCustomRepository, Repository } from 'typeorm';
-
-import Message from '../entities/Message';
-import User from '../entities/User';
-import MessagesRepository from '../repositories/MessagesRepository';
-import UsersRepository from '../repositories/UsersRepository';
+import { IMessagesRepository } from '../repositories/MessagesRepository';
+import { IUsersRepository } from '../repositories/UsersRepository';
 
 interface IMessageCreate {
   admin_id?: string;
@@ -12,14 +8,11 @@ interface IMessageCreate {
   text: string;
 }
 
-class MessagesServices {
-  private messagesRepository: Repository<Message>;
-  private usersRepository: Repository<User>;
-
-  constructor() {
-    this.messagesRepository = getCustomRepository(MessagesRepository);
-    this.usersRepository = getCustomRepository(UsersRepository);
-  }
+export class MessagesServices {
+  constructor(
+    private messagesRepository: IMessagesRepository,
+    private usersRepository: IUsersRepository,
+  ) {}
 
   async listByUserId(user_id: string) {
     const user = await this.usersRepository.findOneBy({ id: user_id });
@@ -52,5 +45,3 @@ class MessagesServices {
     return message;
   }
 }
-
-export default MessagesServices;

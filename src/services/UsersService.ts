@@ -1,14 +1,7 @@
-import { getCustomRepository, Repository } from 'typeorm';
+import { IUsersRepository } from '../repositories/UsersRepository';
 
-import User from '../entities/User';
-import UsersRepository from '../repositories/UsersRepository';
-
-class UsersService {
-  private usersRepository: Repository<User>;
-
-  constructor() {
-    this.usersRepository = getCustomRepository(UsersRepository);
-  }
+export class UsersService {
+  constructor(private usersRepository: IUsersRepository) {}
 
   async show(email: string) {
     const user = await this.usersRepository.findOneBy({ email });
@@ -28,5 +21,3 @@ class UsersService {
     return user;
   }
 }
-
-export default UsersService;

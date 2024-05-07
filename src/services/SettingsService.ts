@@ -1,8 +1,5 @@
 import { badRequest, notFound } from '@hapi/boom';
-import { getCustomRepository, Repository } from 'typeorm';
-
-import Setting from '../entities/Setting';
-import SettingsRepository from '../repositories/SettingsRepository';
+import { ISettingsRepository } from '../repositories/SettingsRepository';
 
 interface ISettingsCreate {
   id?: string;
@@ -10,12 +7,8 @@ interface ISettingsCreate {
   user_id?: string;
 }
 
-class SettingsService {
-  private settingsRepository: Repository<Setting>;
-
-  constructor() {
-    this.settingsRepository = getCustomRepository(SettingsRepository);
-  }
+export class SettingsService {
+  constructor(private settingsRepository: ISettingsRepository) {}
 
   async getById(id: string) {
     const settings = await this.settingsRepository.findOneBy({ id });
@@ -51,5 +44,3 @@ class SettingsService {
     return settings;
   }
 }
-
-export default SettingsService;
