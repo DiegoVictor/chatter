@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import SettingsService from '../services/SettingsService';
 
-class SettingsController {
+export class SettingsController {
   async show(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 
@@ -31,5 +31,3 @@ class SettingsController {
     return response.json(settings);
   }
 }
-
-export default SettingsController;

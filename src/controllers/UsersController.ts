@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import UsersService from '../services/UsersService';
 
-class UsersController {
+export class UsersController {
   async store(request: Request, response: Response): Promise<Response> {
     const { email } = request.body;
 
@@ -12,5 +12,3 @@ class UsersController {
     return response.status(201).json(user);
   }
 }
-
-export default UsersController;

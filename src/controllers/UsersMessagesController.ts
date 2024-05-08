@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import MessagesServices from '../services/MessagesServices';
 
-class UsersMessagesController {
+export class UsersMessagesController {
   async index(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
     const messagesServices = new MessagesServices();
@@ -12,5 +12,3 @@ class UsersMessagesController {
     return response.json(message);
   }
 }
-
-export default UsersMessagesController;
