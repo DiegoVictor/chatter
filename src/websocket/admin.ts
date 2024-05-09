@@ -1,12 +1,18 @@
 import { io } from '../app';
-import ConnectionsService from '../services/ConnectionsService';
-import MessagesServices from '../services/MessagesServices';
+import { ConnectionsRepository } from '../repositories/ConnectionsRepository';
+import { MessagesRepository } from '../repositories/MessagesRepository';
+import { UsersRepository } from '../repositories/UsersRepository';
+import { ConnectionsService } from '../services/ConnectionsService';
+import { MessagesServices } from '../services/MessagesServices';
+
+const connectionsService = new ConnectionsService(ConnectionsRepository);
+const messagesServices = new MessagesServices(
+  MessagesRepository,
+  UsersRepository,
+);
 
 io.on('connect', async (socket) => {
-  const connectionsService = new ConnectionsService();
-  const messagesServices = new MessagesServices();
   const connectionsPending = await connectionsService.getPending();
-
   io.emit('admin_list_pending', connectionsPending);
 
   socket.on('admin_list_messages_by_user', async (params, callback) => {
@@ -42,9 +48,12 @@ io.on('connect', async (socket) => {
     const { user_id, user_socket_id } = params;
 
     await connectionsService.setAdminId(user_id, socket.id);
-    const connectionsPending = await connectionsService.getPending();
 
-    io.emit('admin_list_pending', connectionsPending);
+    const connectionsPending = await connectionsService.getPending();
+    if (connectionsPending.length > 0) {
+      io.emit('admin_list_pending', connectionsPending);
+    }
+
     io.to(user_socket_id).emit('set_admin_socket_id', { socket_id: socket.id });
   });
 });

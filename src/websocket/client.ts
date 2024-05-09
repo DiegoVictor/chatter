@@ -1,7 +1,10 @@
 import { io } from '../app';
-import ConnectionsService from '../services/ConnectionsService';
-import MessagesServices from '../services/MessagesServices';
-import UsersService from '../services/UsersService';
+import { ConnectionsRepository } from '../repositories/ConnectionsRepository';
+import { MessagesRepository } from '../repositories/MessagesRepository';
+import { UsersRepository } from '../repositories/UsersRepository';
+import { ConnectionsService } from '../services/ConnectionsService';
+import { MessagesServices } from '../services/MessagesServices';
+import { UsersService } from '../services/UsersService';
 
 interface IParams {
   text: string;
@@ -15,11 +18,14 @@ interface IConnection {
   id?: string;
 }
 
-io.on('connect', (socket) => {
-  const connectionsService = new ConnectionsService();
-  const usersService = new UsersService();
-  const messagesServices = new MessagesServices();
+const connectionsService = new ConnectionsService(ConnectionsRepository);
+const usersService = new UsersService(UsersRepository);
+const messagesServices = new MessagesServices(
+  MessagesRepository,
+  UsersRepository,
+);
 
+io.on('connect', (socket) => {
   socket.on('client_first_access', async (params: IParams) => {
     const { email, text } = params;
     let user = await usersService.show(email);
