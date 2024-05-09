@@ -6,9 +6,8 @@ export type IConnectionsRepository = Repository<Connection> & {
   getPending: () => Promise<Connection[]>;
 };
 
-const ConnectionsRepository = AppDataSource.getRepository(Connection);
-ConnectionsRepository.extend({
-  getPending() {
+const ConnectionsRepository = AppDataSource.getRepository(Connection).extend({
+  async getPending() {
     return this.createQueryBuilder('connections')
       .where({ admin_id: IsNull() })
       .leftJoinAndSelect('connections.user', 'user')
