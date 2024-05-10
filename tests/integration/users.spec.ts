@@ -33,17 +33,17 @@ describe('Users', () => {
   });
 
   it('should be able to prevent to duplicate an user', async () => {
-    const user = await factory.attrs<User>('User');
+    const { email } = await factory.attrs<User>('User');
 
     const repository = datasource.getRepository(User);
-    repository.save(repository.create(user));
+    const user = await repository.save(repository.create({ email }));
 
-    const response = await request(http).post('/v1/users').send(user);
+    const response = await request(http).post('/v1/users').send({ email });
 
     expect(response.body).toStrictEqual({
-      ...user,
-      id: expect.any(String),
-      created_at: expect.any(String),
+      id: user.id,
+      created_at: user.created_at.toISOString(),
+      email,
     });
   });
 });
