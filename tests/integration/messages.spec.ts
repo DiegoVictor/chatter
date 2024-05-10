@@ -1,42 +1,41 @@
 import request from 'supertest';
-import { Connection, createConnection, Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
-
 import { http, io } from '../../src/app';
-import Message from '../../src/entities/Message';
+import { Message } from '../../src/entities/Message';
 import factory from '../utils/factory';
-import User from '../../src/entities/User';
+import { User } from '../../src/entities/User';
+import { Setting } from '../../src/entities/Setting';
+import { Connection } from '../../src/entities/Connection';
+import { DataSource } from 'typeorm';
+import { AppDataSource } from '../../src/database/datasource';
 
 describe('Messages', () => {
-  let connection: Connection;
-  let messagesRepository: Repository<Message>;
-  let usersRepository: Repository<User>;
-
-  beforeAll(async () => {
-    connection = await createConnection();
-
-    messagesRepository = connection.getRepository(Message);
-    usersRepository = connection.getRepository(User);
+  let datasource: DataSource;
+  beforeEach(async () => {
+    datasource = AppDataSource.manager.connection;
+    if (!AppDataSource.isInitialized) {
+      datasource = await AppDataSource.initialize();
+    }
   });
 
   beforeEach(async () => {
-    await messagesRepository.delete({});
-    await usersRepository.delete({});
+    for (const entity of [Setting, Connection, Message, User]) {
+      await datasource.getRepository(entity).delete({});
+    }
   });
 
   afterAll(async () => {
     io.close();
     http.close();
-    await messagesRepository.delete({});
-    await usersRepository.delete({});
-    await connection.close();
+
+    await datasource.destroy();
   });
 
   it('should be able to create a new message', async () => {
     const user = await factory.attrs<User>('User');
-    const { id: user_id } = await usersRepository.save(
-      usersRepository.create(user),
-    );
+
+    const repository = datasource.getRepository(User);
+    const { id: user_id } = await repository.save(repository.create(user));
 
     const message = await factory.attrs<Message>('Message', { user_id });
     const response = await request(http).post('/v1/messages').send(message);

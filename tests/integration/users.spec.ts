@@ -1,28 +1,24 @@
 import request from 'supertest';
-import { Connection, createConnection, Repository } from 'typeorm';
-
 import { http, io } from '../../src/app';
-import User from '../../src/entities/User';
+import { User } from '../../src/entities/User';
 import factory from '../utils/factory';
+import { AppDataSource } from '../../src/database/datasource';
+import { DataSource } from 'typeorm';
 
 describe('Users', () => {
-  let connection: Connection;
-  let repository: Repository<User>;
-
-  beforeAll(async () => {
-    connection = await createConnection();
-    repository = connection.getRepository(User);
-  });
-
+  let datasource: DataSource;
   beforeEach(async () => {
-    await repository.delete({});
+    datasource = AppDataSource.manager.connection;
+    if (!AppDataSource.isInitialized) {
+      datasource = await AppDataSource.initialize();
+    }
   });
 
   afterAll(async () => {
     io.close();
     http.close();
-    await repository.delete({});
-    await connection.close();
+
+    await datasource.destroy();
   });
 
   it('should be able to create a new user', async () => {
@@ -38,7 +34,9 @@ describe('Users', () => {
 
   it('should be able to prevent to duplicate an user', async () => {
     const user = await factory.attrs<User>('User');
-    await repository.save(repository.create(user));
+
+    const repository = datasource.getRepository(User);
+    repository.save(repository.create(user));
 
     const response = await request(http).post('/v1/users').send(user);
 

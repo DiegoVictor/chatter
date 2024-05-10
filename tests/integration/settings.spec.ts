@@ -1,37 +1,37 @@
 import request from 'supertest';
-import { Connection, createConnection, Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
-
 import { http, io } from '../../src/app';
-import Setting from '../../src/entities/Setting';
+import { Setting } from '../../src/entities/Setting';
 import factory from '../utils/factory';
-import User from '../../src/entities/User';
+import { User } from '../../src/entities/User';
+import { DataSource } from 'typeorm';
+import { AppDataSource } from '../../src/database/datasource';
 
 describe('Settings', () => {
-  let connection: Connection;
-  let settingsRepository: Repository<Setting>;
-  let usersRepository: Repository<User>;
-
-  beforeAll(async () => {
-    connection = await createConnection();
-    settingsRepository = connection.getRepository(Setting);
-    usersRepository = connection.getRepository(User);
+  let datasource: DataSource;
+  beforeEach(async () => {
+    datasource = AppDataSource.manager.connection;
+    if (!AppDataSource.isInitialized) {
+      datasource = await AppDataSource.initialize();
+    }
   });
 
   beforeEach(async () => {
-    await settingsRepository.delete({});
+    await datasource.getRepository(Setting).delete({});
   });
 
   afterAll(async () => {
     io.close();
     http.close();
-    await settingsRepository.delete({});
-    await connection.close();
+
+    await datasource.destroy();
   });
 
   it('should be able to create a new setting', async () => {
     const user = await factory.attrs<User>('User');
-    const { id } = await usersRepository.save(usersRepository.create(user));
+
+    const repository = datasource.getRepository(User);
+    const { id } = await repository.save(repository.create(user));
 
     const setting = await factory.attrs<Setting>('Setting', { user_id: id });
     const response = await request(http)
@@ -49,9 +49,13 @@ describe('Settings', () => {
 
   it('should not be able to duplicate a setting', async () => {
     const user = await factory.attrs<User>('User');
+
+    const usersRepository = datasource.getRepository(User);
     const { id } = await usersRepository.save(usersRepository.create(user));
 
     const setting = await factory.attrs<Setting>('Setting', { user_id: id });
+
+    const settingsRepository = datasource.getRepository(Setting);
     await settingsRepository.save(settingsRepository.create(setting));
 
     const response = await request(http)
@@ -70,6 +74,10 @@ describe('Settings', () => {
 
   it('should be able to update a setting', async () => {
     const user = await factory.attrs<User>('User');
+
+    const usersRepository = datasource.getRepository(User);
+    const settingsRepository = datasource.getRepository(Setting);
+
     const { id: user_id } = await usersRepository.save(
       usersRepository.create(user),
     );
@@ -111,6 +119,10 @@ describe('Settings', () => {
 
   it('should be able to retrieve a setting', async () => {
     const user = await factory.attrs<User>('User');
+
+    const usersRepository = datasource.getRepository(User);
+    const settingsRepository = datasource.getRepository(Setting);
+
     const { id } = await usersRepository.save(usersRepository.create(user));
 
     const setting = await settingsRepository.save(
