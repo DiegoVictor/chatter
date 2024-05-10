@@ -1,63 +1,44 @@
 import io from 'socket.io-client';
 import { AddressInfo } from 'net';
-import {
-  Connection as TypeORMConnection,
-  createConnection,
-  getRepository,
-  Repository,
-} from 'typeorm';
-
 import { http, io as server } from '../../src/app';
-import Connection from '../../src/entities/Connection';
+import { Connection } from '../../src/entities/Connection';
 import '../../src/websocket/client';
 import factory from '../utils/factory';
-import User from '../../src/entities/User';
-import Message from '../../src/entities/Message';
+import { User } from '../../src/entities/User';
+import { Message } from '../../src/entities/Message';
+import { Setting } from '../../src/entities/Setting';
+import { DataSource } from 'typeorm';
+import { AppDataSource } from '../../src/database/datasource';
 
-global.Promise = jest.requireActual('promise');
-jest.setTimeout(10000);
+const httpServer = http.listen();
 
 describe('Client Socket', () => {
-  let connection: TypeORMConnection;
-  let serverAddress: AddressInfo;
-  let connectionsRepository: Repository<Connection>;
-  let usersRepository: Repository<User>;
-  let messagesRepository: Repository<Message>;
-
-  beforeAll(async () => {
-    connection = await createConnection();
-
-    connectionsRepository = getRepository(Connection);
-    usersRepository = connection.getRepository(User);
-    messagesRepository = connection.getRepository(Message);
-
-    const httpServer = http.listen();
-    serverAddress = httpServer.address() as AddressInfo;
+  let datasource: DataSource;
+  beforeEach(async () => {
+    datasource = AppDataSource.manager.connection;
+    if (!AppDataSource.isInitialized) {
+      datasource = await AppDataSource.initialize();
+    }
   });
 
   beforeEach(async () => {
-    await messagesRepository.delete({});
-    await Promise.all([
-      connectionsRepository.delete({}),
-      usersRepository.delete({}),
-    ]);
+    for (const entity of [Setting, Connection, Message, User]) {
+      await datasource.getRepository(entity).delete({});
+    }
   });
 
   afterAll(async () => {
     server.close();
     http.close();
 
-    await messagesRepository.delete({});
-    await Promise.all([
-      connectionsRepository.delete({}),
-      usersRepository.delete({}),
-    ]);
-    await connection.close();
+    await datasource.destroy();
   });
 
   it('should be able to send initial message', async () => {
     const { email } = await factory.attrs<User>('User');
     const { text } = await factory.attrs<Message>('Message');
+
+    const serverAddress = httpServer.address() as AddressInfo;
 
     const socket = io(
       `http://[${serverAddress.address}]:${serverAddress.port}`,
@@ -85,8 +66,11 @@ describe('Client Socket', () => {
       });
     });
 
-    const user = await usersRepository.findOne({ email });
-    const connection = await connectionsRepository.findOne({
+    const usersRepository = datasource.getRepository(User);
+    const connectionsRepository = datasource.getRepository(Connection);
+
+    const user = await usersRepository.findOneBy({ email });
+    const connection = await connectionsRepository.findOneBy({
       user_id: user.id,
     });
 
@@ -123,6 +107,13 @@ describe('Client Socket', () => {
 
   it('should be able to send initial message on already existing connection', async () => {
     const user = await factory.attrs<User>('User');
+
+    const usersRepository = datasource.getRepository(User);
+    const connectionsRepository =
+      datasource.getRepository<Connection>(Connection);
+
+    const serverAddress = httpServer.address() as AddressInfo;
+
     const {
       id: user_id,
       email,
@@ -149,12 +140,12 @@ describe('Client Socket', () => {
       let connection: Connection;
 
       socket.on('connect', async () => {
-        connection = await connectionsRepository.save(
-          connectionsRepository.create({
-            socket_id: socket.id,
-            user_id,
-          }),
-        );
+        connection = connectionsRepository.create({
+          socket_id: socket.id,
+          user_id,
+        });
+
+        await connectionsRepository.save(connection);
 
         socket.emit('client_first_access', { email: user.email, text });
       });
@@ -204,6 +195,12 @@ describe('Client Socket', () => {
       factory.attrs<Message>('Message'),
       factory.attrs<User>('User'),
     ]);
+
+    const usersRepository = datasource.getRepository(User);
+    const connectionsRepository = datasource.getRepository(Connection);
+
+    const serverAddress = httpServer.address() as AddressInfo;
+
     const { id: user_id } = await usersRepository.save(
       usersRepository.create(user),
     );
