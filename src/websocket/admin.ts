@@ -49,11 +49,6 @@ io.on('connect', async (socket) => {
 
     await connectionsService.setAdminId(user_id, socket.id);
 
-    const connectionsPending = await connectionsService.getPending();
-    if (connectionsPending.length > 0) {
-      io.emit('admin_list_pending', connectionsPending);
-    }
-
     io.to(user_socket_id).emit('set_admin_socket_id', { socket_id: socket.id });
   });
 });
