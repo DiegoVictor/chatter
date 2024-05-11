@@ -63,15 +63,17 @@ io.on('connect', (socket) => {
   });
 
   socket.on('client_sent_message', async (params) => {
-    const { text, admin_socket_id } = params;
+    const { text } = params;
 
-    const { user_id } = await connectionsService.getBySocketId(socket.id);
+    const { user_id, admin_id } = await connectionsService.getBySocketId(
+      socket.id,
+    );
     const message = await messagesServices.store({
       text,
       user_id,
     });
 
-    io.to(admin_socket_id).emit('admin_receive_message', {
+    io.to(admin_id).emit('admin_receive_message', {
       message,
       socket_id: socket.id,
     });
