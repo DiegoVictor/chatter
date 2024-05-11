@@ -243,7 +243,6 @@ describe('Client Socket', () => {
 
           socket.emit('client_sent_message', {
             text,
-            admin_socket_id: adminSocket.id,
           });
         });
       });
