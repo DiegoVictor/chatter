@@ -51,11 +51,11 @@ Store the users, settings, messages and connections. For more information to how
 #### Migrations
 Remember to run the database migrations:
 ```
-$ yarn ts-node-dev ./node_modules/typeorm/cli.js migration:run
+$ yarn ts-node-dev ./node_modules/typeorm/cli.js migration:run -- -d ./src/database/datasource.ts
 ```
 Or:
 ```
-$ yarn typeorm migration:run
+$ yarn typeorm migration:run -- -d ./src/database/datasource.ts
 ```
 > See more information on [TypeORM Migrations](https://typeorm.io/#/migrations).
 
