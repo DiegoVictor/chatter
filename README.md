@@ -1,6 +1,7 @@
 # Chatter
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/DiegoVictor/chatter/config.yml?logo=github&style=flat-square)](https://github.com/DiegoVictor/chatter/actions)
 [![typescript](https://img.shields.io/badge/typescript-5.5.4-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![sqlite3](https://img.shields.io/badge/sqlite-5.1.7-003b57?style=flat-square&logo=sqlite&logoColor=white)](https://www.sqlite.org)
 [![eslint](https://img.shields.io/badge/eslint-8.57.0-4b32c3?style=flat-square&logo=eslint)](https://eslint.org/)
 [![airbnb-style](https://flat.badgen.net/badge/style-guide/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 [![jest](https://img.shields.io/badge/jest-29.7.0-brightgreen?style=flat-square&logo=jest)](https://jestjs.io/)
