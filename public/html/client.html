@@ -94,13 +94,14 @@
     </button>
 
     <script>
-      onLoad();
+      const CLIENT_ID = "2e97178a-8776-4e5c-ba6d-2f75c5df7ce5";
+
       const chat = document.getElementById("chat_help");
       const btn_support = document.getElementById("btn_support");
       const chat_support = document.getElementById('chat_in_support');
 
       function onLoad() {
-        fetch("http://localhost:3333/v1/settings/admin").then((result) =>
+        fetch("http://localhost:3333/v1/settings/" + CLIENT_ID).then((result) =>
           result.json().then((response) => {
             const buttonSupport = document.getElementById("btn_support");
             if (!response.chat) {
@@ -109,6 +110,7 @@
           })
         );
       }
+      onLoad();
 
       function openChat() {
         chat.style.display = "block";
