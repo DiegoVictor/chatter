@@ -117,8 +117,6 @@ POST http://localhost:3333/v1/settings
 |`/users/:id/messages`|GET|`id` of the user.|Return user's messages.
 |`/messages`|POST|Body with message data.|Save user new message.
 
-> Routes with `Bearer` as auth method expect an `Authorization` header. See [Bearer Token](#bearer-token) section for more information.
-
 ### Requests
 * `POST /settings`
 
