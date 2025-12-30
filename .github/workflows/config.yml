@@ -9,10 +9,8 @@ jobs:
       PORT: '3333'
       DOCS_URL: 'https://github.com/DiegoVictor/chatter#errors-reference'
     steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v6
       - name: Run tests
         run: |
           npm ci
